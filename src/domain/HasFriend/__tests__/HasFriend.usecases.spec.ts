@@ -12,6 +12,10 @@ describe('HasFriend Relation UseCases', () => {
   );
   const mockedId = faker.datatype.uuid();
 
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
   describe('CreateRelation() method', () => {
     it('throw error when id is too short', async () => {
       await expect(async () => {
@@ -25,7 +29,38 @@ describe('HasFriend Relation UseCases', () => {
         );
       }).rejects.toThrow();
     });
+
+    it('persists relation when DTO is valid', async () => {
+      await useCases.createRelation(
+        { friendId: mockedId },
+        HumanProfileEntityMock,
+      );
+
+      expect(IHasFriendRelRepositoryMock.persist).toHaveBeenCalled();
+    });
   });
 
-  describe('DeleteRelation() method', () => {});
+  describe('DeleteRelation() method', () => {
+    it('throw error when id is too short', async () => {
+      await expect(async () => {
+        await useCases.deleteRelation({ friendId: '' }, HumanProfileEntityMock);
+      }).rejects.toThrow();
+
+      await expect(async () => {
+        await useCases.deleteRelation(
+          { friendId: 'abdc' },
+          HumanProfileEntityMock,
+        );
+      }).rejects.toThrow();
+    });
+
+    it('delete relation when DTO is valid', async () => {
+      await useCases.deleteRelation(
+        { friendId: mockedId },
+        HumanProfileEntityMock,
+      );
+
+      expect(IHasFriendRelRepositoryMock.deleteOne).toHaveBeenCalled();
+    });
+  });
 });
