@@ -1,7 +1,7 @@
 import { ISchema } from '../common/ISchema';
 
-export const CreateProfileSchema: ISchema = {
-  $id: 'CreateProfileSchema',
+export const CreateHumanProfileSchema: ISchema = {
+  $id: 'CreateHumanProfileSchema',
   type: 'object',
   properties: {
     name: {
@@ -23,10 +23,11 @@ export const CreateProfileSchema: ISchema = {
     },
   },
   required: ['name', 'middlename', 'surname', 'birthday'],
+  additionalProperties: false,
 };
 
-export const EditProfileSchema: ISchema = {
-  $id: 'EditProfileSchema',
+export const EditHumanProfileSchema: ISchema = {
+  $id: 'EditHumanProfileSchema',
   type: 'object',
   properties: {
     id: {
@@ -51,6 +52,8 @@ export const EditProfileSchema: ISchema = {
       minLength: 5,
     },
   },
+  required: ['id'],
+  additionalProperties: false,
   anyOf: [
     { required: ['name'] },
     { required: ['middlename'] },
@@ -59,8 +62,8 @@ export const EditProfileSchema: ISchema = {
   ],
 };
 
-export const GetProfileSchema: ISchema = {
-  $id: 'GetProfileSchema',
+export const GetHumanProfileSchema: ISchema = {
+  $id: 'GetHumanProfileSchema',
   type: 'object',
   properties: {
     id: {
@@ -69,10 +72,11 @@ export const GetProfileSchema: ISchema = {
     },
   },
   required: ['id'],
+  additionalProperties: false,
 };
 
-export const DeleteProfileSchema: ISchema = {
-  $id: 'DeleteProfileSchema',
+export const DeleteHumanProfileSchema: ISchema = {
+  $id: 'DeleteHumanProfileSchema',
   type: 'object',
   properties: {
     id: {
@@ -81,4 +85,5 @@ export const DeleteProfileSchema: ISchema = {
     },
   },
   required: ['id'],
+  additionalProperties: false,
 };

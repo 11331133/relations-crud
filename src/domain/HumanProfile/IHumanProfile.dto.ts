@@ -1,11 +1,11 @@
-export interface CreateProfileDTO {
+export interface CreateHumanProfileDTO {
   name: string;
   middlename: string;
   surname: string;
   birthday: string;
 }
 
-export interface EditProfileDTO {
+export interface EditHumanProfileDTO {
   name?: string;
   middlename?: string;
   surname?: string;
@@ -13,10 +13,10 @@ export interface EditProfileDTO {
   id: string;
 }
 
-export interface GetProfileDTO {
+export interface GetHumanProfileDTO {
   id: string;
 }
 
-export interface DeleteProfileDTO {
+export interface DeleteHumanProfileDTO {
   id: string;
 }

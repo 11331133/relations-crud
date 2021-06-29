@@ -3,16 +3,16 @@ import { IValidate } from '../common/IValidate';
 import { IHasFriendRelRepository } from '../HasFriend/IHasFriendRel.repository';
 import { HumanProfile } from './HumanProfile.entity';
 import {
-  CreateProfileSchema,
-  DeleteProfileSchema,
-  EditProfileSchema,
-  GetProfileSchema,
+  CreateHumanProfileSchema,
+  DeleteHumanProfileSchema,
+  EditHumanProfileSchema,
+  GetHumanProfileSchema,
 } from './HumanProfile.schema';
 import {
-  CreateProfileDTO,
-  DeleteProfileDTO,
-  EditProfileDTO,
-  GetProfileDTO,
+  CreateHumanProfileDTO,
+  DeleteHumanProfileDTO,
+  EditHumanProfileDTO,
+  GetHumanProfileDTO,
 } from './IHumanProfile.dto';
 import { IHumanProfileRepository } from './IHumanProfile.repository';
 
@@ -24,8 +24,8 @@ export class HumanProfileUseCases {
     private _generateId: IGenerateId,
   ) {}
 
-  public async createProfile(dto: CreateProfileDTO) {
-    this._validate(dto, CreateProfileSchema);
+  public async createProfile(dto: CreateHumanProfileDTO) {
+    this._validate(dto, CreateHumanProfileSchema);
 
     const profile = new HumanProfile(
       dto.name,
@@ -38,8 +38,8 @@ export class HumanProfileUseCases {
     return await this._profileRepository.persist(profile);
   }
 
-  public async editProfile(dto: EditProfileDTO, user: HumanProfile) {
-    this._validate(dto, EditProfileSchema);
+  public async editProfile(dto: EditHumanProfileDTO, user: HumanProfile) {
+    this._validate(dto, EditHumanProfileSchema);
 
     const profile = await this._profileRepository.findOne(dto.id);
     if (!profile || !this.isSamePerson(dto.id, user.id)) return false;
@@ -55,8 +55,8 @@ export class HumanProfileUseCases {
     return await this._profileRepository.merge(editedProfile);
   }
 
-  public async getProfile(dto: GetProfileDTO, user?: HumanProfile) {
-    this._validate(dto, GetProfileSchema);
+  public async getProfile(dto: GetHumanProfileDTO, user?: HumanProfile) {
+    this._validate(dto, GetHumanProfileSchema);
 
     const profile = await this._profileRepository.findOne(dto.id);
     if (!profile) return false;
@@ -72,8 +72,8 @@ export class HumanProfileUseCases {
     };
   }
 
-  public async deleteProfile(dto: DeleteProfileDTO, user?: HumanProfile) {
-    this._validate(dto, DeleteProfileSchema);
+  public async deleteProfile(dto: DeleteHumanProfileDTO, user?: HumanProfile) {
+    this._validate(dto, DeleteHumanProfileSchema);
 
     if (!user || !this.isSamePerson(dto.id, user.id)) return false;
 

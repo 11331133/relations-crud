@@ -1,5 +1,5 @@
 export class PetProfile {
-  private constructor(
+  constructor(
     private readonly _name: string,
     private readonly _birthday: Date,
     private readonly _id: string,

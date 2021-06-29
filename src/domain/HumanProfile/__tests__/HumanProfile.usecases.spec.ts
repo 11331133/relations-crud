@@ -11,7 +11,7 @@ import { IGenerateIdMock } from '../../common/__tests__/common.mocks';
 
 describe('HumanProfile use cases', () => {
   const mockedId = faker.datatype.uuid();
-  let sampleProfileDTO = {
+  let sampleProfile = {
     name: faker.name.firstName(),
     surname: faker.name.lastName(),
     middlename: faker.name.middleName(),
@@ -32,10 +32,10 @@ describe('HumanProfile use cases', () => {
   describe('CreateProfile use case', () => {
     describe('throw error when', () => {
       test.each([
-        ['name is empty', { ...sampleProfileDTO, name: '' }],
-        ['surname is empty', { ...sampleProfileDTO, surname: '' }],
-        ['middlename is empty', { ...sampleProfileDTO, middlename: '' }],
-        ['birthday is empty', { ...sampleProfileDTO, birthday: '' }],
+        ['name is empty', { ...sampleProfile, name: '' }],
+        ['surname is empty', { ...sampleProfile, surname: '' }],
+        ['middlename is empty', { ...sampleProfile, middlename: '' }],
+        ['birthday is empty', { ...sampleProfile, birthday: '' }],
       ])('%s', async (description, unvalidDTO) => {
         await expect(async () => {
           await useCases.createProfile(unvalidDTO);
@@ -44,14 +44,14 @@ describe('HumanProfile use cases', () => {
     });
 
     it('does not throw error when all data given in valid format', async () => {
-      await useCases.createProfile(sampleProfileDTO);
+      await useCases.createProfile(sampleProfile);
 
       expect(1).toBe(1); // https://github.com/facebook/jest/issues/1700
     });
 
     it('persist profile in repository', async () => {
       IGenerateIdMock.mockReturnValueOnce(mockedId);
-      const { name, middlename, surname, birthday } = sampleProfileDTO;
+      const { name, middlename, surname, birthday } = sampleProfile;
       const expectedProfile = new HumanProfile(
         name,
         middlename,
@@ -60,7 +60,7 @@ describe('HumanProfile use cases', () => {
         mockedId,
       );
 
-      await useCases.createProfile(sampleProfileDTO);
+      await useCases.createProfile(sampleProfile);
 
       expect(IHumanProfileRepositoryMock.persist).toHaveBeenCalledWith(
         expectedProfile,
@@ -72,7 +72,7 @@ describe('HumanProfile use cases', () => {
     it('throw error when id is empty', async () => {
       await expect(async () => {
         await useCases.editProfile(
-          { ...sampleProfileDTO, id: '' },
+          { ...sampleProfile, id: '' },
           HumanProfileEntityMock,
         );
       }).rejects.toThrow();
@@ -92,7 +92,7 @@ describe('HumanProfile use cases', () => {
       IHumanProfileRepositoryMock.findOne.mockResolvedValueOnce(
         HumanProfileEntityMock,
       );
-      const { name, middlename, surname, birthday } = sampleProfileDTO;
+      const { name, middlename, surname, birthday } = sampleProfile;
       const expectedProfile = new HumanProfile(
         name,
         middlename,
@@ -102,7 +102,7 @@ describe('HumanProfile use cases', () => {
       );
 
       await useCases.editProfile(
-        { ...sampleProfileDTO, id: HumanProfileEntityMock.id },
+        { ...sampleProfile, id: HumanProfileEntityMock.id },
         HumanProfileEntityMock,
       );
 
