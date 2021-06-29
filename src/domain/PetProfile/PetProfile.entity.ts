@@ -20,9 +20,13 @@ export class PetProfile {
     const dayDifference = today.getDate() - this.birthday.getDate();
 
     const birthdayTodayOrHasPassed =
-      monthDifference < 0 || (monthDifference === 0 && dayDifference >= 0);
+      monthDifference > 0 || (monthDifference === 0 && dayDifference >= 0);
 
-    return birthdayTodayOrHasPassed ? yearDifference : yearDifference - 1;
+    if (yearDifference) {
+      return birthdayTodayOrHasPassed ? yearDifference : yearDifference - 1;
+    } else {
+      return Number(birthdayTodayOrHasPassed);
+    }
   }
 
   public get id(): string {
