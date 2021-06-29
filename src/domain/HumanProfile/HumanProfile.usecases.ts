@@ -55,16 +55,14 @@ export class HumanProfileUseCases {
     return await this._profileRepository.merge(editedProfile);
   }
 
-  public async getProfile(dto: GetProfileDTO, user: HumanProfile) {
+  public async getProfile(dto: GetProfileDTO, user?: HumanProfile) {
     this._validate(dto, GetProfileSchema);
 
     const profile = await this._profileRepository.findOne(dto.id);
     if (!profile) return false;
-
-    const isFriend = await this._hasFriendRelationRepository.isFriend(
-      profile.id,
-      user.id,
-    );
+    const isFriend = user
+      ? await this._hasFriendRelationRepository.isFriend(profile.id, user.id)
+      : false;
 
     return {
       name: profile.name,
@@ -74,10 +72,10 @@ export class HumanProfileUseCases {
     };
   }
 
-  public async deleteProfile(dto: DeleteProfileDTO, user: HumanProfile) {
+  public async deleteProfile(dto: DeleteProfileDTO, user?: HumanProfile) {
     this._validate(dto, DeleteProfileSchema);
 
-    if (!this.isSamePerson(dto.id, user.id)) return false;
+    if (!user || !this.isSamePerson(dto.id, user.id)) return false;
 
     await this._profileRepository.deleteOne(dto.id);
   }

@@ -1,6 +1,6 @@
 import { IHasFriendRelRepository } from '../IHasFriendRel.repository';
 
-export const IHasFriendRelRepositoryMock: IHasFriendRelRepository = {
+export const IHasFriendRelRepositoryMock = {
   persist: jest.fn(),
   merge: jest.fn(),
   findOne: jest.fn(),
