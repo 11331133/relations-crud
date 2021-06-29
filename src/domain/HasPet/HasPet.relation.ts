@@ -2,7 +2,6 @@ export class HasPetRelation {
   constructor(
     private readonly _ownerId: string,
     private readonly _petId: string,
-    private readonly _relationId: string,
   ) {}
 
   public get owner(): string {
@@ -11,9 +10,5 @@ export class HasPetRelation {
 
   public get petId(): string {
     return this._petId;
-  }
-
-  public get relationId(): string {
-    return this._relationId;
   }
 }

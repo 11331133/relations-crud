@@ -1,4 +1,4 @@
-import { IRepository } from '../common/IRepository';
+import { IProfileRepository } from '../common/IProfileRepository';
 import { PetProfile } from './PetProfile.entity';
 
-export interface IPetProfileRepository extends IRepository<PetProfile> {}
+export interface IPetProfileRepository extends IProfileRepository<PetProfile> {}

@@ -1,4 +1,5 @@
-import { IRepository } from '../common/IRepository';
+import { IProfileRepository } from '../common/IProfileRepository';
 import { HumanProfile } from './HumanProfile.entity';
 
-export interface IHumanProfileRepository extends IRepository<HumanProfile> {}
+export interface IHumanProfileRepository
+  extends IProfileRepository<HumanProfile> {}

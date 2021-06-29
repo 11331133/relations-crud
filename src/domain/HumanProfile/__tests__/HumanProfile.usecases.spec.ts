@@ -113,15 +113,13 @@ describe('HumanProfile use cases', () => {
   });
 
   describe('GetProfile use case', () => {
-    it('throw error when id is empty', async () => {
-      await expect(async () => {
-        await useCases.getProfile({ id: '' });
-      }).rejects.toThrow();
-    });
-
     it('throw error when id is too short', async () => {
       await expect(async () => {
         await useCases.getProfile({ id: 'abcd' });
+      }).rejects.toThrow();
+
+      await expect(async () => {
+        await useCases.getProfile({ id: '' });
       }).rejects.toThrow();
     });
 
@@ -181,15 +179,13 @@ describe('HumanProfile use cases', () => {
   });
 
   describe('DeleteProfile use case', () => {
-    it('throw error when id is empty', async () => {
-      await expect(async () => {
-        await useCases.getProfile({ id: '' }, HumanProfileEntityMock);
-      }).rejects.toThrow();
-    });
-
     it('throw error when id is too short', async () => {
       await expect(async () => {
         await useCases.getProfile({ id: 'abcd' }, HumanProfileEntityMock);
+      }).rejects.toThrow();
+
+      await expect(async () => {
+        await useCases.getProfile({ id: '' }, HumanProfileEntityMock);
       }).rejects.toThrow();
     });
 

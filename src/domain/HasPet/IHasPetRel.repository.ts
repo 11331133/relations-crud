@@ -1,6 +1,6 @@
-import { IRepository } from '../common/IRepository';
+import { IRelationRepository } from '../common/IRelationRepository';
 import { HasPetRelation } from './HasPet.relation';
 
-export interface IHasPetRepository extends IRepository<HasPetRelation> {
+export interface IHasPetRepository extends IRelationRepository<HasPetRelation> {
   getAllHasPetRelations(humanId: string): Promise<HasPetRelation[]>;
 }

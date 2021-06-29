@@ -1,8 +1,8 @@
 export class LoveHumanRelation {
   constructor(
     private readonly _humanId: string,
+    private readonly _petId: string,
     private readonly _strength: number,
-    private readonly _relationId: string,
   ) {}
 
   public get strength(): number {
@@ -13,7 +13,7 @@ export class LoveHumanRelation {
     return this._humanId;
   }
 
-  public get relationId(): string {
-    return this._relationId;
+  public get petId(): string {
+    return this._petId;
   }
 }

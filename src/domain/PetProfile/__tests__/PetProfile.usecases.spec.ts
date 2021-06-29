@@ -117,13 +117,7 @@ describe('Pet profile use cases', () => {
 
     it('edit profile if data is valid and user is owner of pet with ID from DTO', async () => {
       IHasPetRelationRepositoryMock.getAllHasPetRelations.mockResolvedValueOnce(
-        [
-          new HasPetRelation(
-            HumanProfileEntityMock.id,
-            mockedId,
-            faker.datatype.uuid(),
-          ),
-        ],
+        [new HasPetRelation(HumanProfileEntityMock.id, mockedId)],
       );
       jest.spyOn(PetProfileEntityMock, 'id', 'get').mockReturnValue(mockedId);
       IPetProfileRepositoryMock.findOne.mockResolvedValueOnce(
@@ -140,23 +134,17 @@ describe('Pet profile use cases', () => {
   });
 
   describe('GetProfile use case', () => {
-    it('throw error when id is empty', async () => {
-      IHasPetRelationRepositoryMock.getAllHasPetRelations.mockReturnValueOnce([
-        { petId: '' },
-      ]);
-
-      await expect(async () => {
-        await useCases.getProfile({ id: '' });
-      }).rejects.toThrow();
-    });
-
     it('throw error when id is too short', async () => {
-      IHasPetRelationRepositoryMock.getAllHasPetRelations.mockReturnValueOnce([
-        { petId: 'abcd' },
-      ]);
+      IHasPetRelationRepositoryMock.getAllHasPetRelations
+        .mockReturnValueOnce([{ petId: 'abcd' }])
+        .mockReturnValueOnce([{ petId: '' }]);
 
       await expect(async () => {
         await useCases.getProfile({ id: 'abcd' });
+      }).rejects.toThrow();
+
+      await expect(async () => {
+        await useCases.getProfile({ id: '' });
       }).rejects.toThrow();
     });
 
@@ -177,23 +165,17 @@ describe('Pet profile use cases', () => {
   });
 
   describe('DeleteProfile use case', () => {
-    it('throw error when id is empty', async () => {
-      IHasPetRelationRepositoryMock.getAllHasPetRelations.mockReturnValueOnce([
-        { petId: '' },
-      ]);
-
-      await expect(async () => {
-        await useCases.deleteProfile({ id: '' }, HumanProfileEntityMock);
-      }).rejects.toThrow();
-    });
-
     it('throw error when id is too short', async () => {
-      IHasPetRelationRepositoryMock.getAllHasPetRelations.mockReturnValueOnce([
-        { petId: 'abcd' },
-      ]);
+      IHasPetRelationRepositoryMock.getAllHasPetRelations
+        .mockReturnValueOnce([{ petId: 'abcd' }])
+        .mockReturnValueOnce([{ petId: '' }]);
 
       await expect(async () => {
         await useCases.deleteProfile({ id: 'abcd' }, HumanProfileEntityMock);
+      }).rejects.toThrow();
+
+      await expect(async () => {
+        await useCases.deleteProfile({ id: '' }, HumanProfileEntityMock);
       }).rejects.toThrow();
     });
 

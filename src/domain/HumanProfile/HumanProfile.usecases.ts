@@ -1,6 +1,6 @@
 import { IGenerateId } from '../common/IGenerateId';
 import { IValidate } from '../common/IValidate';
-import { IHasFriendRelRepository } from '../HasFriend/IHasFriendRel.repository';
+import { IHasFriendRelRepository } from '../HasFriend/IHasFriend.repository';
 import { HumanProfile } from './HumanProfile.entity';
 import {
   CreateHumanProfileSchema,
