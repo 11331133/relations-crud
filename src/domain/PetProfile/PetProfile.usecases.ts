@@ -56,7 +56,7 @@ export class PetProfileUseCases {
     const petProfile = await this._profileRepository.findOne(dto.id);
     if (!petProfile) return false;
 
-    if (!this.isPetOwnedByUser(user.id, petProfile.id)) return false;
+    if (!(await this.isPetOwnedByUser(user.id, petProfile.id))) return false;
 
     const editedProfile = new PetProfile(
       dto.name ? dto.name : petProfile.name,
@@ -81,7 +81,7 @@ export class PetProfileUseCases {
   public async deleteProfile(dto: DeletePetProfileDTO, user: HumanProfile) {
     this._validate(dto, DeletePetProfileSchema);
 
-    if (!this.isPetOwnedByUser(user.id, dto.id)) return false;
+    if (!(await this.isPetOwnedByUser(user.id, dto.id))) return false;
 
     return await this._profileRepository.deleteOne(dto.id);
   }
@@ -91,6 +91,6 @@ export class PetProfileUseCases {
       await this._hasPetRelationRepository.getAllHasPetRelations(userId)
     ).map((relation) => relation.petId);
 
-    return userPetsIds.find((id) => id === petId);
+    return userPetsIds.some((id) => id === petId);
   }
 }
