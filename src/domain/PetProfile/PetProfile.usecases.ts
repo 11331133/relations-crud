@@ -36,11 +36,7 @@ export class PetProfileUseCases {
 
     const petId = await this._generateId();
     const profile = new PetProfile(dto.name, new Date(dto.birthday), petId);
-    const relation = new HasPetRelation(
-      user.id,
-      petId,
-      await this._generateId(),
-    );
+    const relation = new HasPetRelation(user.id, petId);
 
     await Promise.all([
       this._hasPetRelationRepository.persist(relation),

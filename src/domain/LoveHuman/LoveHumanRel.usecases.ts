@@ -44,10 +44,6 @@ export class LoveHumanRelationUseCases {
   ) {
     this._validate(dto, DeleteLoveHumanRelationSchema);
 
-    return await this._relationRepository.deleteOne(
-      user.id,
-      dto.humanId,
-      false,
-    );
+    return await this._relationRepository.deleteOne(user.id, dto.humanId);
   }
 }

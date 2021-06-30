@@ -11,14 +11,14 @@ import { IGenerateIdMock } from '../../common/__tests__/common.mocks';
 
 describe('HumanProfile use cases', () => {
   const mockedId = faker.datatype.uuid();
-  let sampleProfile = {
+  const sampleProfile = {
     name: faker.name.firstName(),
     surname: faker.name.lastName(),
     middlename: faker.name.middleName(),
     birthday: faker.date.past().toISOString(),
   };
 
-  let useCases = new HumanProfileUseCases(
+  const useCases = new HumanProfileUseCases(
     IHumanProfileRepositoryMock,
     IHasFriendRelRepositoryMock,
     validate,
