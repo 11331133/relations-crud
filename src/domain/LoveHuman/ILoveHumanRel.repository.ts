@@ -3,5 +3,5 @@ import { LoveHumanRelation } from './LoveHuman.relation';
 
 export interface ILoveHumanRepository
   extends IRelationRepository<LoveHumanRelation> {
-  getAllLoveHumans(petId: string): Promise<LoveHumanRelation[]>;
+  getAllLoveHumanRelations(petId: string): Promise<LoveHumanRelation[]>;
 }

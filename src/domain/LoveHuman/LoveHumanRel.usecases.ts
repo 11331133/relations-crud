@@ -1,11 +1,53 @@
-class LoveHumanRelation {
-  constructor() {}
+import { IValidate } from '../common/IValidate';
+import { PetProfile } from '../PetProfile/PetProfile.entity';
+import {
+  CreateLoveHumanRelationDTO,
+  DeleteLoveHumanRelationDTO,
+  EditLoveHumanRelationDTO,
+} from './ILoveHumanRel.dto';
+import { ILoveHumanRepository } from './ILoveHumanRel.repository';
+import { LoveHumanRelation } from './LoveHuman.relation';
+import {
+  CreateLoveHumanRelationSchema,
+  DeleteLoveHumanRelationSchema,
+  EditLoveHumanRelationSchema,
+} from './LoveHumanRel.shema';
 
-  public async createRelation() {}
+export class LoveHumanRelationUseCases {
+  constructor(
+    private _relationRepository: ILoveHumanRepository,
+    private _validate: IValidate,
+  ) {}
 
-  public async deleteRelation() {}
+  public async createRelation(
+    dto: CreateLoveHumanRelationDTO,
+    user: PetProfile,
+  ) {
+    this._validate(dto, CreateLoveHumanRelationSchema);
 
-  public async editLoveStrength() {}
+    const relation = new LoveHumanRelation(dto.humanId, user.id, dto.strength);
 
-  public async getAllHumansPetLove() {}
+    return await this._relationRepository.persist(relation);
+  }
+
+  public async editRelation(dto: EditLoveHumanRelationDTO, user: PetProfile) {
+    this._validate(dto, EditLoveHumanRelationSchema);
+
+    const relation = new LoveHumanRelation(dto.humanId, user.id, dto.strength);
+
+    await this._relationRepository.merge(relation);
+  }
+
+  public async deleteRelation(
+    dto: DeleteLoveHumanRelationDTO,
+    user: PetProfile,
+  ) {
+    this._validate(dto, DeleteLoveHumanRelationSchema);
+
+    return await this._relationRepository.deleteOne(
+      user.id,
+      dto.humanId,
+      false,
+    );
+  }
 }

@@ -13,7 +13,7 @@ import { IHasFriendRelRepository } from './IHasFriend.repository';
 
 export class HasFriendRelationsUseCases {
   constructor(
-    private _HasFriendRelationRepository: IHasFriendRelRepository,
+    private _relationRepository: IHasFriendRelRepository,
     private _validate: IValidate,
   ) {}
 
@@ -25,7 +25,7 @@ export class HasFriendRelationsUseCases {
 
     const relation = new HasFriendRelation(user.id, dto.friendId);
 
-    return await this._HasFriendRelationRepository.persist(relation);
+    return await this._relationRepository.persist(relation);
   }
 
   public async deleteRelation(
@@ -34,8 +34,10 @@ export class HasFriendRelationsUseCases {
   ) {
     this._validate(dto, DeleteHasFriendRelationSchema);
 
-    const relation = new HasFriendRelation(user.id, dto.friendId);
-
-    return await this._HasFriendRelationRepository.deleteOne(relation);
+    return await this._relationRepository.deleteOne(
+      user.id,
+      dto.friendId,
+      false,
+    );
   }
 }
