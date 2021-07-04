@@ -1,3 +1,4 @@
+import { InjectRepository } from '@nestjs/typeorm';
 import { Transaction } from 'neo4j-driver-core';
 import { EntityManager, Repository } from 'typeorm';
 import { IPetProfileRepository } from '../../../domain/PetProfile/IPetProfile.repository';
@@ -9,6 +10,7 @@ import { PetProfileOrmEntity } from './PetProfile.orm-entity';
 
 export class PetProfilePersistenceService implements IPetProfileRepository {
   constructor(
+    @InjectRepository(PetProfileOrmEntity)
     private _relationalDBRepository: Repository<PetProfileOrmEntity>,
     private _graphDBRepository: PetProfileGraphPersistence,
     private _transactionRunner: TransactionRunner,
@@ -23,6 +25,7 @@ export class PetProfilePersistenceService implements IPetProfileRepository {
         this._graphDBRepository.persist(profile),
       ]);
     } catch (error) {
+      console.log('Error occured', error);
       await Promise.all([
         this._relationalDBRepository.delete(profile.id),
         this._graphDBRepository.deleteOne(profile.id),

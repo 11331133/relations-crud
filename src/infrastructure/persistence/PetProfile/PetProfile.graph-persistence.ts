@@ -1,7 +1,9 @@
+import { Injectable } from '@nestjs/common';
 import { Transaction } from 'neo4j-driver-core';
 import { PetProfile } from '../../../domain/PetProfile/PetProfile.entity';
 import { Neo4jClient } from '../common/neo4jclient';
 
+@Injectable()
 export class PetProfileGraphPersistence {
   constructor(private _neo4jclient: Neo4jClient) {}
 

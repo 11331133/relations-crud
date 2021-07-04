@@ -5,9 +5,11 @@ import { IHasFriendRelRepository } from '../../../domain/HasFriend/IHasFriend.re
 import { validate } from '../../adapters/validate.adapter';
 import { HasFriendPersistenceModule } from '../../persistence/HasFriend/HasFriend.persistence-module';
 import { HasFriendPersistenceService } from '../../persistence/HasFriend/HasFriend.persistence-service';
+import { HasFriendController } from './HasFriend.controller';
 
 @Module({
   imports: [HasFriendPersistenceModule],
+  controllers: [HasFriendController],
   providers: [
     { provide: validate, useValue: validate },
     {

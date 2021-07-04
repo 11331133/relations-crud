@@ -11,11 +11,11 @@ export class HasPetPersistenceService implements IHasPetRepository {
     const query =
       'MATCH (human:HumanProfile {id: $humanId}), ' +
       '(pet:PetProfile {id: $petId}) ' +
-      'MERGE (human)-[relation:HAS_PET]->(pet)' +
+      'MERGE (human)-[relation:HAS_PET]->(pet) ' +
       'RETURN relation';
     const params = { humanId: relation.owner, petId: relation.petId };
 
-    await this._neo4jClient.write(query, params);
+    const result = await this._neo4jClient.write(query, params);
     return true;
   }
 
@@ -35,13 +35,15 @@ export class HasPetPersistenceService implements IHasPetRepository {
     humanId: string,
   ): Promise<HasPetRelation[]> {
     const query =
-      'MATCH (:HumanProfile {id: $humanId})' +
-      '-[relation:HAS_PET]->(pets)' +
-      'RETURN pets';
+      'MATCH (human:HumanProfile {id: $humanId})' +
+      '-[relation:HAS_PET]->(pets) ' +
+      'RETURN pets.id';
     const params = { humanId };
 
-    const result = await this._neo4jClient.read(query, params);
-    console.log(result);
-    return [];
+    const response = await this._neo4jClient.read(query, params);
+
+    return response.records.map(
+      (record) => new HasPetRelation(humanId, record.get('pets.id')),
+    );
   }
 }

@@ -37,12 +37,15 @@ export class PetProfileUseCases {
     const profile = new PetProfile(dto.name, new Date(dto.birthday), petId);
     const relation = new HasPetRelation(humanId, petId);
 
-    await Promise.all([
-      this._hasPetRelationRepository.persist(relation),
-      this._profileRepository.persist(profile),
-    ]);
+    try {
+      await this._profileRepository.persist(profile);
+      await this._hasPetRelationRepository.persist(relation);
+    } catch (error) {
+      await this._profileRepository.deleteOne(profile.id);
+      await this._hasPetRelationRepository.deleteOne(humanId, petId);
+    }
 
-    return true;
+    return { id: petId };
   }
 
   public async editProfile(dto: EditPetProfileDTO, humanId: string) {

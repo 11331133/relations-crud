@@ -60,12 +60,18 @@ export class LoveHumanPersistenceService implements ILoveHumanRepository {
     const query =
       'MATCH (:PetProfile {id: $petId})' +
       '-[relation:LOVE_HUMAN]->' +
-      '(humans)' +
-      'RETURN humans';
+      '(human)' +
+      'RETURN human.id, relation.strength';
     const params = { petId };
 
     const result = await this._neo4jClient.read(query, params);
-    console.log(result);
-    return [];
+    return result.records.map(
+      (record) =>
+        new LoveHumanRelation(
+          record.get('human.id'),
+          petId,
+          record.get('relation.strength'),
+        ),
+    );
   }
 }

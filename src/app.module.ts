@@ -2,7 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthentificationGuard } from './infrastructure/webserver/common/Authentification.guard';
+import { AuthentificationGuard } from './infrastructure/webserver/common/Auth/Authentification.guard';
+import { AuthentificationWebModule } from './infrastructure/webserver/common/Auth/Authentification.web-module';
 import { AuthorizationGuard } from './infrastructure/webserver/common/Authorization.guard';
 import { HasFriendWebModule } from './infrastructure/webserver/HasFriend/HasFriend.web-module';
 import { HasPetWebModule } from './infrastructure/webserver/HasPet/HasPet.web-module';
@@ -30,6 +31,7 @@ import { PetProfileWebModule } from './infrastructure/webserver/PetProfile/PetPr
       }),
       inject: [ConfigService],
     }),
+    AuthentificationWebModule,
     HumanProfileWebModule,
     PetProfileWebModule,
     LoveHumanWebModule,

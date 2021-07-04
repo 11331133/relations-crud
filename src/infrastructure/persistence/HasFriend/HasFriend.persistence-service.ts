@@ -11,14 +11,14 @@ export class HasFriendPersistenceService implements IHasFriendRelRepository {
     const query =
       'MATCH (user:HumanProfile {id: $userId}), ' +
       '(friend:HumanProfile {id: $friendId}) ' +
-      'MERGE (user)-[relation:HAS_FRIEND]->(friend) ' +
-      'RETURN relation';
+      'MERGE (user)-[relation:HAS_FRIEND]->(friend)';
     const params = {
       userId: relation.whoHasFriend,
       friendId: relation.friendId,
     };
 
     const result = await this._neo4jclient.write(query, params);
+
     return true;
   }
 
@@ -26,7 +26,7 @@ export class HasFriendPersistenceService implements IHasFriendRelRepository {
     const query =
       'MATCH (:HumanProfile {id: $userId})' +
       '-[relation:HAS_FRIEND]->' +
-      '(:HumanProfile (id: $friendId)) ' +
+      '(:HumanProfile {id: $friendId}) ' +
       'DELETE relation';
     const params = { userId: from, friendId: to };
 
@@ -36,25 +36,27 @@ export class HasFriendPersistenceService implements IHasFriendRelRepository {
 
   public async isFriend(userId: string, friendId: string): Promise<boolean> {
     const query =
-      'MATCH (friend:HumanProfile {id: $friendId})' +
-      '-[relation:HAS_FRIEND]->(user:HumanProfile {id: $userId}) ' +
+      'MATCH (:HumanProfile {id: $userId})' +
+      '-[relation:HAS_FRIEND]->(:HumanProfile {id: $friendId}) ' +
       'RETURN relation';
     const params = { userId, friendId };
 
     const result = await this._neo4jclient.read(query, params);
 
-    return true;
+    return result.records.length > 0;
   }
 
   public async getAllFriends(humanId: string): Promise<HasFriendRelation[]> {
     const query =
       'MATCH (user:HumanProfile {id: $userId})' +
       '-[:HAS_FRIEND]->(friend) ' +
-      'RETURN friend ';
+      'RETURN friend.id';
     const params = { id: humanId };
 
-    const result = await this._neo4jclient.read(query, params);
+    const response = await this._neo4jclient.read(query, params);
 
-    return [];
+    return response.records.map(
+      (record) => new HasFriendRelation(humanId, record.get('friend.id')),
+    );
   }
 }

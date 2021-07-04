@@ -35,7 +35,8 @@ export class HumanProfileUseCases {
       await this._generateId(),
     );
 
-    return await this._profileRepository.persist(profile);
+    await this._profileRepository.persist(profile);
+    return { id: profile.id };
   }
 
   public async editProfile(dto: EditHumanProfileDTO, humanId: string) {
