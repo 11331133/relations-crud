@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Transaction } from 'neo4j-driver-core';
 import { EntityManager, Repository } from 'typeorm';
@@ -55,6 +55,7 @@ export class HumanProfilePersistenceService implements IHumanProfileRepository {
 
   public async findOne(id: string): Promise<HumanProfile> {
     const profile = await this._relationalDBRepository.findOne({ id });
+    if (!profile) return undefined;
 
     return HumanProfileMapper.mapToDomainEntity(profile);
   }

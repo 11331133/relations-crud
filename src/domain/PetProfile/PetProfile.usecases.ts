@@ -14,7 +14,6 @@ import {
   DeletePetProfileSchema,
 } from './PetProfile.schema';
 import { PetProfile } from './PetProfile.entity';
-import { HumanProfile } from '../HumanProfile/HumanProfile.entity';
 import { IHasPetRepository } from '../HasPet/IHasPet.repository';
 import { HasPetRelation } from '../HasPet/HasPet.relation';
 

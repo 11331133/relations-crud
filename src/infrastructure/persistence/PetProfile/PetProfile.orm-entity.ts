@@ -1,18 +1,12 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()
-export class HumanProfileOrmEntity {
+export class PetProfileOrmEntity {
   @PrimaryColumn()
   id: string;
 
   @Column()
   name: string;
-
-  @Column()
-  middlename: string;
-
-  @Column()
-  surname: string;
 
   @Column({ type: 'timestamptz' })
   birthday: Date;

@@ -4,7 +4,7 @@ import { IHasFriendRelRepository } from '../../../domain/HasFriend/IHasFriend.re
 import { Neo4jClient } from '../common/neo4jclient';
 
 @Injectable()
-export class HasFriendGraphPersistence implements IHasFriendRelRepository {
+export class HasFriendPersistenceService implements IHasFriendRelRepository {
   constructor(private _neo4jclient: Neo4jClient) {}
 
   public async persist(relation: HasFriendRelation): Promise<boolean> {

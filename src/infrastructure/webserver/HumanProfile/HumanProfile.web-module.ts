@@ -6,7 +6,7 @@ import { HumanProfileUseCases } from '../../../domain/HumanProfile/HumanProfile.
 import { IHumanProfileRepository } from '../../../domain/HumanProfile/IHumanProfile.repository';
 import { generateId } from '../../adapters/generateId.adapter';
 import { validate } from '../../adapters/validate.adapter';
-import { HasFriendGraphPersistence } from '../../persistence/HasFriend/HasFriend.graph-persistence';
+import { HasFriendPersistenceService } from '../../persistence/HasFriend/HasFriend.persistence-service';
 import { HasFriendPersistenceModule } from '../../persistence/HasFriend/HasFriend.persistence-module';
 import { HumanProfilePersistenceModule } from '../../persistence/HumanProfile/HumanProfile.persistence-module';
 import { HumanProfilePersistenceService } from '../../persistence/HumanProfile/HumanProfile.persistence-service';
@@ -38,7 +38,7 @@ import { HumanProfileController } from './HumanProfile.controller';
       },
       inject: [
         HumanProfilePersistenceService,
-        HasFriendGraphPersistence,
+        HasFriendPersistenceService,
         validate,
         generateId,
       ],

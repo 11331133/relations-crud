@@ -6,6 +6,7 @@ import { HasFriendPersistenceModule } from './infrastructure/persistence/HasFrie
 import { AuthentificationGuard } from './infrastructure/webserver/common/Authentification.guard';
 import { AuthorizationGuard } from './infrastructure/webserver/common/Authorization.guard';
 import { HumanProfileWebModule } from './infrastructure/webserver/HumanProfile/HumanProfile.web-module';
+import { PetProfileWebModule } from './infrastructure/webserver/PetProfile/PetProfile.web-module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { HumanProfileWebModule } from './infrastructure/webserver/HumanProfile/H
       inject: [ConfigService],
     }),
     HumanProfileWebModule,
+    PetProfileWebModule,
   ],
   providers: [
     {

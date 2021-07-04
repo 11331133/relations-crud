@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { Neo4jClient } from '../common/neo4jclient';
-import { HasFriendGraphPersistence } from './HasFriend.graph-persistence';
+import { HasFriendPersistenceService } from './HasFriend.persistence-service';
 
 @Module({
-  providers: [HasFriendGraphPersistence, Neo4jClient],
-  exports: [HasFriendGraphPersistence],
+  providers: [HasFriendPersistenceService, Neo4jClient],
+  exports: [HasFriendPersistenceService],
 })
 export class HasFriendPersistenceModule {}
