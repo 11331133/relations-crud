@@ -19,25 +19,21 @@ export class HasFriendRelationsUseCases {
 
   public async createRelation(
     dto: CreateHasFriendRelationDTO,
-    user: HumanProfile,
+    humanId: string,
   ) {
     this._validate(dto, CreateHasFriendRelationSchema);
 
-    const relation = new HasFriendRelation(user.id, dto.friendId);
+    const relation = new HasFriendRelation(humanId, dto.friendId);
 
     return await this._relationRepository.persist(relation);
   }
 
   public async deleteRelation(
     dto: DeleteHasFriendRelationDTO,
-    user: HumanProfile,
+    humanId: string,
   ) {
     this._validate(dto, DeleteHasFriendRelationSchema);
 
-    return await this._relationRepository.deleteOne(
-      user.id,
-      dto.friendId,
-      false,
-    );
+    return await this._relationRepository.deleteOne(humanId, dto.friendId);
   }
 }

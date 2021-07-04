@@ -10,8 +10,8 @@ describe('HasFriend Relation UseCases', () => {
     IHasFriendRelRepositoryMock,
     validate,
   );
-  const mockedId = faker.datatype.uuid();
-
+  const mockedId1 = faker.datatype.uuid();
+  const mockedId2 = faker.datatype.uuid();
   beforeEach(() => {
     jest.resetAllMocks();
   });
@@ -19,22 +19,16 @@ describe('HasFriend Relation UseCases', () => {
   describe('CreateRelation() method', () => {
     it('throw error when id is too short', async () => {
       await expect(async () => {
-        await useCases.createRelation({ friendId: '' }, HumanProfileEntityMock);
+        await useCases.createRelation({ friendId: '' }, mockedId1);
       }).rejects.toThrow();
 
       await expect(async () => {
-        await useCases.createRelation(
-          { friendId: 'abdc' },
-          HumanProfileEntityMock,
-        );
+        await useCases.createRelation({ friendId: 'abdc' }, mockedId1);
       }).rejects.toThrow();
     });
 
     it('persists relation when DTO is valid', async () => {
-      await useCases.createRelation(
-        { friendId: mockedId },
-        HumanProfileEntityMock,
-      );
+      await useCases.createRelation({ friendId: mockedId1 }, mockedId2);
 
       expect(IHasFriendRelRepositoryMock.persist).toHaveBeenCalled();
     });
@@ -43,22 +37,16 @@ describe('HasFriend Relation UseCases', () => {
   describe('DeleteRelation() method', () => {
     it('throw error when id is too short', async () => {
       await expect(async () => {
-        await useCases.deleteRelation({ friendId: '' }, HumanProfileEntityMock);
+        await useCases.deleteRelation({ friendId: '' }, mockedId1);
       }).rejects.toThrow();
 
       await expect(async () => {
-        await useCases.deleteRelation(
-          { friendId: 'abdc' },
-          HumanProfileEntityMock,
-        );
+        await useCases.deleteRelation({ friendId: 'abdc' }, mockedId1);
       }).rejects.toThrow();
     });
 
     it('delete relation when DTO is valid', async () => {
-      await useCases.deleteRelation(
-        { friendId: mockedId },
-        HumanProfileEntityMock,
-      );
+      await useCases.deleteRelation({ friendId: mockedId1 }, mockedId2);
 
       expect(IHasFriendRelRepositoryMock.deleteOne).toHaveBeenCalled();
     });

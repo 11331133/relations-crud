@@ -32,10 +32,7 @@ describe('Pet profile use cases', () => {
   describe('CreateProfile use case', () => {
     it('throw error when name is empty', async () => {
       await expect(async () => {
-        await useCases.createProfile(
-          { ...sampleProfile, name: '' },
-          HumanProfileEntityMock,
-        );
+        await useCases.createProfile({ ...sampleProfile, name: '' }, mockedId);
       }).rejects.toThrow();
     });
 
@@ -43,7 +40,7 @@ describe('Pet profile use cases', () => {
       await expect(async () => {
         await useCases.createProfile(
           { ...sampleProfile, birthday: '' },
-          HumanProfileEntityMock,
+          mockedId,
         );
       }).rejects.toThrow();
     });
@@ -60,7 +57,7 @@ describe('Pet profile use cases', () => {
         mockedId,
       );
 
-      await useCases.createProfile(sampleProfile, HumanProfileEntityMock);
+      await useCases.createProfile(sampleProfile, mockedId);
 
       expect(IPetProfileRepositoryMock.persist).toHaveBeenCalledWith(
         expectedProfile,
@@ -72,10 +69,7 @@ describe('Pet profile use cases', () => {
         [PetProfileEntityMock, PetProfileEntityMock],
       );
 
-      const response = await useCases.createProfile(
-        sampleProfile,
-        HumanProfileEntityMock,
-      );
+      const response = await useCases.createProfile(sampleProfile, mockedId);
 
       expect(response).toBeFalsy();
       expect(IPetProfileRepositoryMock.persist).not.toHaveBeenCalled();
@@ -85,16 +79,13 @@ describe('Pet profile use cases', () => {
   describe('EditProfile use case', () => {
     it('throw error when id is empty', async () => {
       await expect(async () => {
-        await useCases.editProfile(
-          { ...sampleProfile, id: '' },
-          HumanProfileEntityMock,
-        );
+        await useCases.editProfile({ ...sampleProfile, id: '' }, mockedId);
       }).rejects.toThrow();
     });
 
     it('throw error when only id is specified', async () => {
       await expect(async () => {
-        await useCases.editProfile({ id: mockedId }, HumanProfileEntityMock);
+        await useCases.editProfile({ id: mockedId }, mockedId);
       }).rejects.toThrow();
     });
 
@@ -108,7 +99,7 @@ describe('Pet profile use cases', () => {
 
       await useCases.editProfile(
         { id: mockedId, name: faker.name.firstName() },
-        HumanProfileEntityMock,
+        HumanProfileEntityMock.id,
       );
 
       expect(IHasPetRelationRepositoryMock.persist).not.toHaveBeenCalled();
@@ -126,7 +117,7 @@ describe('Pet profile use cases', () => {
 
       await useCases.editProfile(
         { id: mockedId, name: faker.name.firstName() },
-        HumanProfileEntityMock,
+        HumanProfileEntityMock.id,
       );
 
       expect(IPetProfileRepositoryMock.merge).toHaveBeenCalled();
@@ -171,11 +162,11 @@ describe('Pet profile use cases', () => {
         .mockReturnValueOnce([{ petId: '' }]);
 
       await expect(async () => {
-        await useCases.deleteProfile({ id: 'abcd' }, HumanProfileEntityMock);
+        await useCases.deleteProfile({ id: 'abcd' }, mockedId);
       }).rejects.toThrow();
 
       await expect(async () => {
-        await useCases.deleteProfile({ id: '' }, HumanProfileEntityMock);
+        await useCases.deleteProfile({ id: '' }, mockedId);
       }).rejects.toThrow();
     });
 
@@ -184,7 +175,7 @@ describe('Pet profile use cases', () => {
         [],
       );
 
-      await useCases.deleteProfile({ id: mockedId }, HumanProfileEntityMock);
+      await useCases.deleteProfile({ id: mockedId }, HumanProfileEntityMock.id);
 
       expect(IPetProfileRepositoryMock.deleteOne).not.toHaveBeenCalled();
     });
@@ -194,7 +185,7 @@ describe('Pet profile use cases', () => {
         { petId: mockedId },
       ]);
 
-      await useCases.deleteProfile({ id: mockedId }, HumanProfileEntityMock);
+      await useCases.deleteProfile({ id: mockedId }, HumanProfileEntityMock.id);
 
       expect(IPetProfileRepositoryMock.deleteOne).toHaveBeenCalled();
     });

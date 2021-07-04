@@ -11,6 +11,8 @@ import { IGenerateIdMock } from '../../common/__tests__/common.mocks';
 
 describe('HumanProfile use cases', () => {
   const mockedId = faker.datatype.uuid();
+  const mockedId2 = faker.datatype.uuid();
+
   const sampleProfile = {
     name: faker.name.firstName(),
     surname: faker.name.lastName(),
@@ -71,19 +73,13 @@ describe('HumanProfile use cases', () => {
   describe('EditProfile use case', () => {
     it('throw error when id is empty', async () => {
       await expect(async () => {
-        await useCases.editProfile(
-          { ...sampleProfile, id: '' },
-          HumanProfileEntityMock,
-        );
+        await useCases.editProfile({ ...sampleProfile, id: '' }, mockedId);
       }).rejects.toThrow();
     });
 
     it('throw error when only id is given', async () => {
       await expect(async () => {
-        await useCases.editProfile(
-          { id: mockedId, name: '' },
-          HumanProfileEntityMock,
-        );
+        await useCases.editProfile({ id: mockedId, name: '' }, mockedId2);
       }).rejects.toThrow();
     });
 
@@ -103,7 +99,7 @@ describe('HumanProfile use cases', () => {
 
       await useCases.editProfile(
         { ...sampleProfile, id: HumanProfileEntityMock.id },
-        HumanProfileEntityMock,
+        HumanProfileEntityMock.id,
       );
 
       expect(IHumanProfileRepositoryMock.merge).toHaveBeenCalledWith(
@@ -129,10 +125,7 @@ describe('HumanProfile use cases', () => {
       );
       IHasFriendRelRepositoryMock.isFriend.mockResolvedValueOnce(true);
 
-      const profile = await useCases.getProfile(
-        { id: mockedId },
-        HumanProfileEntityMock,
-      );
+      const profile = await useCases.getProfile({ id: mockedId }, mockedId2);
 
       expect(profile).toStrictEqual({
         name: HumanProfileEntityMock.name,
@@ -148,10 +141,7 @@ describe('HumanProfile use cases', () => {
       );
       IHasFriendRelRepositoryMock.isFriend.mockResolvedValueOnce(false);
 
-      const profile = await useCases.getProfile(
-        { id: mockedId },
-        HumanProfileEntityMock,
-      );
+      const profile = await useCases.getProfile({ id: mockedId }, mockedId2);
 
       expect(profile).toStrictEqual({
         name: HumanProfileEntityMock.name,
@@ -181,18 +171,18 @@ describe('HumanProfile use cases', () => {
   describe('DeleteProfile use case', () => {
     it('throw error when id is too short', async () => {
       await expect(async () => {
-        await useCases.getProfile({ id: 'abcd' }, HumanProfileEntityMock);
+        await useCases.getProfile({ id: 'abcd' }, mockedId);
       }).rejects.toThrow();
 
       await expect(async () => {
-        await useCases.getProfile({ id: '' }, HumanProfileEntityMock);
+        await useCases.getProfile({ id: '' }, mockedId);
       }).rejects.toThrow();
     });
 
     it("return false when user want to delete another person's profile", async () => {
       const result = await useCases.deleteProfile(
         { id: faker.datatype.uuid() },
-        HumanProfileEntityMock,
+        mockedId,
       );
 
       expect(result).toBe(false);
@@ -200,9 +190,12 @@ describe('HumanProfile use cases', () => {
     });
 
     it('return false when user profile is not given', async () => {
-      const result = await useCases.deleteProfile({
-        id: faker.datatype.uuid(),
-      });
+      const result = await useCases.deleteProfile(
+        {
+          id: faker.datatype.uuid(),
+        },
+        mockedId,
+      );
 
       expect(result).toBe(false);
       expect(IHumanProfileRepositoryMock.deleteOne).not.toBeCalled();
@@ -211,7 +204,7 @@ describe('HumanProfile use cases', () => {
     it('deletes profile if user profile is given and id is correct', async () => {
       await useCases.deleteProfile(
         { id: HumanProfileEntityMock.id },
-        HumanProfileEntityMock,
+        HumanProfileEntityMock.id,
       );
 
       expect(IHumanProfileRepositoryMock.deleteOne).toBeCalledWith(

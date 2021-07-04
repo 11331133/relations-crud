@@ -1,7 +1,6 @@
 import * as faker from 'faker';
 import { validate } from '../../../infrastructure/adapters/validate.adapter';
-import { PetProfileEntityMock } from '../../PetProfile/__tests__/PetProfile.mocks';
-import { LoveHumanRelationUseCases } from '../LoveHumanRel.usecases';
+import { LoveHumanRelationUseCases } from '../LoveHuman.usecases';
 import { ILoveHumanRepositoryMock } from './LoveHuman.mocks';
 
 describe('LoveHuman use cases', () => {
@@ -14,6 +13,8 @@ describe('LoveHuman use cases', () => {
     humanId: faker.datatype.uuid(),
     strength: faker.datatype.number({ min: -5, max: 5 }),
   };
+
+  const mockedId = faker.datatype.uuid();
 
   describe('createRelation method()', () => {
     describe('throw error when', () => {
@@ -36,13 +37,13 @@ describe('LoveHuman use cases', () => {
         ],
       ])('%s', async (description, unvalidDTO) => {
         await expect(async () => {
-          await useCases.createRelation(unvalidDTO, PetProfileEntityMock);
+          await useCases.createRelation(unvalidDTO, mockedId);
         }).rejects.toThrow();
       });
     });
 
     it('persists relation if data is valid', async () => {
-      await useCases.createRelation(sampleRelation, PetProfileEntityMock);
+      await useCases.createRelation(sampleRelation, mockedId);
 
       expect(ILoveHumanRepositoryMock.persist).toHaveBeenCalled();
     });
@@ -69,13 +70,13 @@ describe('LoveHuman use cases', () => {
         ],
       ])('%s', async (description, unvalidDTO) => {
         await expect(async () => {
-          await useCases.editRelation(unvalidDTO, PetProfileEntityMock);
+          await useCases.editRelation(unvalidDTO, mockedId);
         }).rejects.toThrow();
       });
     });
 
     it('merges relation when data is valid', async () => {
-      await useCases.editRelation(sampleRelation, PetProfileEntityMock);
+      await useCases.editRelation(sampleRelation, mockedId);
 
       expect(ILoveHumanRepositoryMock.merge).toHaveBeenCalled();
     });
@@ -86,14 +87,14 @@ describe('LoveHuman use cases', () => {
       await expect(async () => {
         await useCases.deleteRelation(
           { ...sampleRelation, humanId: '' },
-          PetProfileEntityMock,
+          mockedId,
         );
       }).rejects.toThrow();
 
       await expect(async () => {
         await useCases.deleteRelation(
           { ...sampleRelation, humanId: faker.datatype.uuid().slice(0, 4) },
-          PetProfileEntityMock,
+          mockedId,
         );
       }).rejects.toThrow();
     });
@@ -101,7 +102,7 @@ describe('LoveHuman use cases', () => {
     it('deletes relation when data is valid', async () => {
       await useCases.deleteRelation(
         { humanId: sampleRelation.humanId },
-        PetProfileEntityMock,
+        mockedId,
       );
 
       expect(ILoveHumanRepositoryMock.deleteOne).toHaveBeenCalled();

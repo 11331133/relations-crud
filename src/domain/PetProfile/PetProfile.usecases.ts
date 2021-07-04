@@ -15,7 +15,7 @@ import {
 } from './PetProfile.schema';
 import { PetProfile } from './PetProfile.entity';
 import { HumanProfile } from '../HumanProfile/HumanProfile.entity';
-import { IHasPetRepository } from '../HasPet/IHasPetRel.repository';
+import { IHasPetRepository } from '../HasPet/IHasPet.repository';
 import { HasPetRelation } from '../HasPet/HasPet.relation';
 
 export class PetProfileUseCases {
@@ -26,17 +26,17 @@ export class PetProfileUseCases {
     private _generateId: IGenerateId,
   ) {}
 
-  public async createProfile(dto: CreatePetProfileDTO, user: HumanProfile) {
+  public async createProfile(dto: CreatePetProfileDTO, humanId: string) {
     this._validate(dto, CreatePetProfileSchema);
 
     const existingPets = await this._hasPetRelationRepository.getAllHasPetRelations(
-      user.id,
+      humanId,
     );
     if (existingPets.length >= 2) return false;
 
     const petId = await this._generateId();
     const profile = new PetProfile(dto.name, new Date(dto.birthday), petId);
-    const relation = new HasPetRelation(user.id, petId);
+    const relation = new HasPetRelation(humanId, petId);
 
     await Promise.all([
       this._hasPetRelationRepository.persist(relation),
@@ -46,13 +46,13 @@ export class PetProfileUseCases {
     return true;
   }
 
-  public async editProfile(dto: EditPetProfileDTO, user: HumanProfile) {
+  public async editProfile(dto: EditPetProfileDTO, humanId: string) {
     this._validate(dto, EditPetProfileSchema);
 
     const petProfile = await this._profileRepository.findOne(dto.id);
     if (!petProfile) return false;
 
-    if (!(await this.isPetOwnedByUser(user.id, petProfile.id))) return false;
+    if (!(await this.isPetOwnedByUser(humanId, petProfile.id))) return false;
 
     const editedProfile = new PetProfile(
       dto.name ? dto.name : petProfile.name,
@@ -74,10 +74,10 @@ export class PetProfileUseCases {
     };
   }
 
-  public async deleteProfile(dto: DeletePetProfileDTO, user: HumanProfile) {
+  public async deleteProfile(dto: DeletePetProfileDTO, humanId: string) {
     this._validate(dto, DeletePetProfileSchema);
 
-    if (!(await this.isPetOwnedByUser(user.id, dto.id))) return false;
+    if (!(await this.isPetOwnedByUser(humanId, dto.id))) return false;
 
     return await this._profileRepository.deleteOne(dto.id);
   }

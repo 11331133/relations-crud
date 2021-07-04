@@ -1,7 +1,6 @@
 import * as faker from 'faker';
 import { validate } from '../../../infrastructure/adapters/validate.adapter';
-import { HumanProfileEntityMock } from '../../HumanProfile/__tests__/HumanProfile.mocks';
-import { HasPetRelationUseCases } from '../HasPetRel.usecases';
+import { HasPetRelationUseCases } from '../HasPet.usecases';
 import { IHasPetRelationRepositoryMock } from './HasPet.mocks';
 
 describe('HasPet usecases', () => {
@@ -14,22 +13,24 @@ describe('HasPet usecases', () => {
     petId: faker.datatype.uuid(),
   };
 
+  const mockedId = faker.datatype.uuid();
+
   describe('createRelation method()', () => {
     it('throw error when petId is too short', async () => {
       await expect(async () => {
-        await useCases.createRelation({ petId: '' }, HumanProfileEntityMock);
+        await useCases.createRelation({ petId: '' }, mockedId);
       }).rejects.toThrow();
 
       await expect(async () => {
         await useCases.createRelation(
           { petId: faker.datatype.uuid().slice(0, 4) },
-          HumanProfileEntityMock,
+          mockedId,
         );
       }).rejects.toThrow();
     });
 
     it('persists relation when data is valid', async () => {
-      await useCases.createRelation(sampleRelation, HumanProfileEntityMock);
+      await useCases.createRelation(sampleRelation, mockedId);
 
       expect(IHasPetRelationRepositoryMock.persist).toHaveBeenCalled();
     });
@@ -38,19 +39,19 @@ describe('HasPet usecases', () => {
   describe('deleteRelation method()', () => {
     it('throw error when petId is too short', async () => {
       await expect(async () => {
-        await useCases.deleteRelation({ petId: '' }, HumanProfileEntityMock);
+        await useCases.deleteRelation({ petId: '' }, mockedId);
       }).rejects.toThrow();
 
       await expect(async () => {
         await useCases.deleteRelation(
           { petId: faker.datatype.uuid().slice(0, 4) },
-          HumanProfileEntityMock,
+          mockedId,
         );
       }).rejects.toThrow();
     });
 
     it('deletes relation when data is valid', async () => {
-      await useCases.deleteRelation(sampleRelation, HumanProfileEntityMock);
+      await useCases.deleteRelation(sampleRelation, mockedId);
 
       expect(IHasPetRelationRepositoryMock.deleteOne).toHaveBeenCalled();
     });

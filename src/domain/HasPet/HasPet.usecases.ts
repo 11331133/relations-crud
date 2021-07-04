@@ -9,7 +9,7 @@ import {
   CreateHasPetRelationDTO,
   DeleteHasPetRelationDTO,
 } from './IHasPet.dto';
-import { IHasPetRepository } from './IHasPetRel.repository';
+import { IHasPetRepository } from './IHasPet.repository';
 
 export class HasPetRelationUseCases {
   constructor(
@@ -17,23 +17,17 @@ export class HasPetRelationUseCases {
     private _validate: IValidate,
   ) {}
 
-  public async createRelation(
-    dto: CreateHasPetRelationDTO,
-    user: HumanProfile,
-  ) {
+  public async createRelation(dto: CreateHasPetRelationDTO, humanId: string) {
     this._validate(dto, CreateHasPetRelationSchema);
 
-    const relation = new HasPetRelation(user.id, dto.petId);
+    const relation = new HasPetRelation(humanId, dto.petId);
 
     await this._relationRepository.persist(relation);
   }
 
-  public async deleteRelation(
-    dto: DeleteHasPetRelationDTO,
-    user: HumanProfile,
-  ) {
+  public async deleteRelation(dto: DeleteHasPetRelationDTO, humanId: string) {
     this._validate(dto, DeleteHasPetRelationSchema);
 
-    await this._relationRepository.deleteOne(user.id, dto.petId);
+    await this._relationRepository.deleteOne(humanId, dto.petId);
   }
 }
