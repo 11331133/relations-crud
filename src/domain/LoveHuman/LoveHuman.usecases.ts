@@ -1,5 +1,4 @@
 import { IValidate } from '../common/IValidate';
-import { PetProfile } from '../PetProfile/PetProfile.entity';
 import {
   CreateLoveHumanRelationDTO,
   DeleteLoveHumanRelationDTO,
