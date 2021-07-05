@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import {
   CreateHasFriendRelationDTO,
   DeleteHasFriendRelationDTO,
+  GetAllFriendsDTO,
 } from '../../../domain/HasFriend/HasFriend.dto';
 import { HasFriendRelationsUseCases } from '../../../domain/HasFriend/HasFriend.usecases';
 import { Role, Roles } from '../common/Roles.decorator';
@@ -27,5 +28,14 @@ export class HasFriendController {
     @HumanId() humanId: string,
   ) {
     return await this._useCases.deleteRelation(dto, humanId);
+  }
+
+  @Get('getAllFriends/:friendId')
+  @Roles({ roles: [Role.Human] })
+  public async getAllFriends(
+    @Param() dto: GetAllFriendsDTO,
+    @HumanId() humanId: string,
+  ) {
+    return await this._useCases.getAllFriends(dto, humanId);
   }
 }

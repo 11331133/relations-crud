@@ -25,3 +25,16 @@ export const DeleteHasFriendRelationSchema: ISchema = {
   required: ['friendId'],
   additionalProperties: false,
 };
+
+export const GetAllFriendsSchema: ISchema = {
+  $id: 'GetAllFriendsSchemaSchema',
+  type: 'object',
+  properties: {
+    friendId: {
+      type: 'string',
+      minLength: 5,
+    },
+  },
+  required: ['friendId'],
+  additionalProperties: false,
+};

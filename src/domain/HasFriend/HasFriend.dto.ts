@@ -5,3 +5,7 @@ export interface CreateHasFriendRelationDTO {
 export interface DeleteHasFriendRelationDTO {
   friendId: string;
 }
+
+export interface GetAllFriendsDTO {
+  friendId: string;
+}
