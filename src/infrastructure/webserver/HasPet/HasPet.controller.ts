@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { HasPetRelationUseCases } from '../../../domain/HasPet/HasPet.usecases';
 import {
   CreateHasPetRelationDTO,
@@ -17,7 +17,7 @@ export class HasPetController {
     @Body() dto: CreateHasPetRelationDTO,
     @HumanId() humanId: string,
   ) {
-    return this._useCases.createRelation(dto, humanId);
+    return await this._useCases.createRelation(dto, humanId);
   }
 
   @Delete(':petId')
@@ -26,6 +26,12 @@ export class HasPetController {
     @Param() dto: DeleteHasPetRelationDTO,
     @HumanId() humanId: string,
   ) {
-    return this._useCases.deleteRelation(dto, humanId);
+    return await this._useCases.deleteRelation(dto, humanId);
+  }
+
+  @Get('getAllHasPetRelations')
+  @Roles({ roles: [Role.Human] })
+  public async getAllHasPetRelations(@HumanId() humanId: string) {
+    return await this._useCases.getAllHasPetRelations(humanId);
   }
 }

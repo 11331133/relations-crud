@@ -29,4 +29,16 @@ export class HasPetRelationUseCases {
 
     await this._relationRepository.deleteOne(humanId, dto.petId);
   }
+
+  public async getAllHasPetRelations(humanId: string) {
+    // this method is empty, but open for new business logic
+    // for example: Only friends and owner can see list of pets
+    const relations = await this._relationRepository.getAllHasPetRelations(
+      humanId,
+    );
+
+    return {
+      petIds: relations.map((relation) => relation.petId),
+    };
+  }
 }

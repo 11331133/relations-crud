@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import {
   CreateLovesHumanRelationDTO,
   DeleteLovesHumanRelationDTO,
@@ -37,5 +45,11 @@ export class LovesHumanController {
     @PetId() petId: string,
   ) {
     return await this._useCases.deleteRelation(dto, petId);
+  }
+
+  @Get('getAllHumansPetLoves')
+  @Roles({ roles: [Role.Pet] })
+  public async getAllHumansPetLoves(@PetId() petId: string) {
+    return await this._useCases.getAllHumansPetLoves(petId);
   }
 }

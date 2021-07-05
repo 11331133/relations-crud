@@ -25,7 +25,6 @@ export class PetProfilePersistenceService implements IPetProfileRepository {
         this._graphDBRepository.persist(profile),
       ]);
     } catch (error) {
-      console.log('Error occured', error);
       await Promise.all([
         this._relationalDBRepository.delete(profile.id),
         this._graphDBRepository.deleteOne(profile.id),

@@ -39,4 +39,18 @@ export class LovesHumanRelationUseCases {
 
     return await this._relationRepository.deleteOne(petId, dto.humanId);
   }
+
+  public async getAllHumansPetLoves(petId: string) {
+    // this method is empty, but open for new busines logic
+    // for example, only another pets can use this method, or
+    // only humans that pet loves can use this method, etc
+
+    const relations = await this._relationRepository.getAllLovesHumanRelations(
+      petId,
+    );
+    return relations.map((relation) => ({
+      humanId: relation.humanId,
+      strength: relation.strength,
+    }));
+  }
 }
