@@ -1,5 +1,4 @@
 import { IValidate } from '../common/IValidate';
-import { HumanProfile } from '../HumanProfile/HumanProfile.entity';
 import { HasFriendRelation } from './HasFriend.relation';
 import {
   CreateHasFriendRelationDTO,
@@ -23,6 +22,7 @@ export class HasFriendRelationsUseCases {
   ) {
     this._validate(dto, CreateHasFriendRelationSchema);
 
+    if (dto.friendId === humanId) return false;
     const relation = new HasFriendRelation(humanId, dto.friendId);
 
     return await this._relationRepository.persist(relation);

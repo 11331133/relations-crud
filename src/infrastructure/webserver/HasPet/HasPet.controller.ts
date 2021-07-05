@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { HasPetRelationUseCases } from '../../../domain/HasPet/HasPet.usecases';
 import {
   CreateHasPetRelationDTO,
@@ -20,10 +20,10 @@ export class HasPetController {
     return this._useCases.createRelation(dto, humanId);
   }
 
-  @Delete('deleteRelation')
+  @Delete(':petId')
   @Roles({ roles: [Role.Human] })
   public async deleteRelation(
-    @Body() dto: DeleteHasPetRelationDTO,
+    @Param() dto: DeleteHasPetRelationDTO,
     @HumanId() humanId: string,
   ) {
     return this._useCases.deleteRelation(dto, humanId);

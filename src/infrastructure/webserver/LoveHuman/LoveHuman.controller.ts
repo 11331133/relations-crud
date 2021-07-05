@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, Put } from '@nestjs/common';
 import {
   CreateLoveHumanRelationDTO,
   DeleteLoveHumanRelationDTO,
@@ -30,10 +30,10 @@ export class LoveHumanController {
     return await this._useCases.editRelation(dto, petId);
   }
 
-  @Delete('deleteRelation')
+  @Delete('deleteRelation/:humanId')
   @Roles({ roles: [Role.Pet] })
   public async deleteRelation(
-    @Body() dto: DeleteLoveHumanRelationDTO,
+    @Param() dto: DeleteLoveHumanRelationDTO,
     @PetId() petId: string,
   ) {
     return await this._useCases.deleteRelation(dto, petId);

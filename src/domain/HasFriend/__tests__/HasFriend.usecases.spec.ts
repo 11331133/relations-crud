@@ -32,6 +32,15 @@ describe('HasFriend Relation UseCases', () => {
 
       expect(IHasFriendRelRepositoryMock.persist).toHaveBeenCalled();
     });
+
+    it('returns false if trying to create relationship with itself', async () => {
+      const result = await useCases.createRelation(
+        { friendId: mockedId1 },
+        mockedId1,
+      );
+
+      expect(result).toBeFalsy();
+    });
   });
 
   describe('DeleteRelation() method', () => {

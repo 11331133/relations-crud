@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import {
   CreatePetProfileDTO,
   DeletePetProfileDTO,
@@ -32,15 +40,15 @@ export class PetProfileController {
   }
 
   @Get(':id')
-  public async getProfile(@Body() dto: GetPetProfileDTO) {
+  public async getProfile(@Param() dto: GetPetProfileDTO) {
     return await this._useCases.getProfile(dto);
   }
 
   @Delete(':id')
   @Roles({ roles: [Role.Human] })
   public async deleteProfile(
-    @Body() dto: DeletePetProfileDTO,
-    humanId: string,
+    @Param() dto: DeletePetProfileDTO,
+    @HumanId() humanId: string,
   ) {
     return await this._useCases.deleteProfile(dto, humanId);
   }

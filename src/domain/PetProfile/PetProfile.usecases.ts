@@ -69,6 +69,7 @@ export class PetProfileUseCases {
     this._validate(dto, GetPetProfileSchema);
 
     const petProfile = await this._profileRepository.findOne(dto.id);
+    if (!petProfile) return false;
 
     return {
       name: petProfile.name,

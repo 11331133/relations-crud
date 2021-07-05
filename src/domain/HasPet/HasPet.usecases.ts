@@ -1,5 +1,4 @@
 import { IValidate } from '../common/IValidate';
-import { HumanProfile } from '../HumanProfile/HumanProfile.entity';
 import { HasPetRelation } from './HasPet.relation';
 import {
   CreateHasPetRelationSchema,

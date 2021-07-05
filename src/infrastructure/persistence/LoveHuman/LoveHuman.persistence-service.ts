@@ -1,7 +1,9 @@
+import { Injectable } from '@nestjs/common';
 import { ILoveHumanRepository } from '../../../domain/LoveHuman/ILoveHuman.repository';
 import { LoveHumanRelation } from '../../../domain/LoveHuman/LoveHuman.relation';
 import { Neo4jClient } from '../common/neo4jclient';
 
+@Injectable()
 export class LoveHumanPersistenceService implements ILoveHumanRepository {
   constructor(private _neo4jClient: Neo4jClient) {}
 
@@ -38,7 +40,7 @@ export class LoveHumanPersistenceService implements ILoveHumanRepository {
     return true;
   }
 
-  public async deleteOne(humanId: string, petId: string): Promise<boolean> {
+  public async deleteOne(petId: string, humanId: string): Promise<boolean> {
     const query =
       'MATCH (pet:PetProfile {id: $petId})' +
       '-[relation:LOVE_HUMAN]->' +
@@ -50,7 +52,7 @@ export class LoveHumanPersistenceService implements ILoveHumanRepository {
       humanId,
     };
 
-    await this._neo4jClient.write(query, params);
+    const result = await this._neo4jClient.write(query, params);
     return true;
   }
 
