@@ -1,4 +1,5 @@
 import { IValidate } from '../common/IValidate';
+import { successMessage } from '../common/ReturnMessage';
 import { HasPetRelation } from './HasPet.relation';
 import {
   CreateHasPetRelationSchema,
@@ -37,8 +38,8 @@ export class HasPetRelationUseCases {
       humanId,
     );
 
-    return {
+    return successMessage({
       petIds: relations.map((relation) => relation.petId),
-    };
+    });
   }
 }

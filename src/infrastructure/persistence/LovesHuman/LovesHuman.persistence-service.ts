@@ -7,7 +7,7 @@ import { Neo4jClient } from '../common/neo4jclient';
 export class LovesHumanPersistenceService implements ILovesHumanRepository {
   constructor(private _neo4jClient: Neo4jClient) {}
 
-  public async persist(relation: LovesHumanRelation): Promise<boolean> {
+  public async persist(relation: LovesHumanRelation): Promise<void> {
     const query =
       'MATCH (pet:PetProfile {id: $petId}), ' +
       '(human:HumanProfile {id: $humanId}) ' +
@@ -20,10 +20,9 @@ export class LovesHumanPersistenceService implements ILovesHumanRepository {
     };
 
     await this._neo4jClient.write(query, params);
-    return true;
   }
 
-  public async merge(relation: LovesHumanRelation): Promise<boolean> {
+  public async merge(relation: LovesHumanRelation): Promise<void> {
     const query =
       'MATCH (pet:PetProfile {id: $petId})' +
       '-[relation:LOVES_HUMAN]->' +
@@ -37,23 +36,20 @@ export class LovesHumanPersistenceService implements ILovesHumanRepository {
     };
 
     await this._neo4jClient.write(query, params);
-    return true;
   }
 
-  public async deleteOne(petId: string, humanId: string): Promise<boolean> {
+  public async deleteOne(petId: string, humanId: string): Promise<void> {
     const query =
       'MATCH (pet:PetProfile {id: $petId})' +
       '-[relation:LOVES_HUMAN]->' +
       '(human:HumanProfile {id: $humanId}) ' +
       'DELETE relation';
-
     const params = {
       petId,
       humanId,
     };
 
-    const result = await this._neo4jClient.write(query, params);
-    return true;
+    await this._neo4jClient.write(query, params);
   }
 
   public async getAllLovesHumanRelations(

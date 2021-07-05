@@ -1,5 +1,6 @@
 import * as faker from 'faker';
 import { validate } from '../../../infrastructure/adapters/validate.adapter';
+import { Code, failMessage, successMessage } from '../../common/ReturnMessage';
 import { IGenerateIdMock } from '../../common/__tests__/common.mocks';
 import { HasPetRelation } from '../../HasPet/HasPet.relation';
 import { IHasPetRelationRepositoryMock } from '../../HasPet/__tests__/HasPet.mocks';
@@ -64,14 +65,14 @@ describe('Pet profile use cases', () => {
       );
     });
 
-    it('return false if user allready has two pets', async () => {
+    it('return fail message if user allready has two pets', async () => {
       IHasPetRelationRepositoryMock.getAllHasPetRelations.mockResolvedValueOnce(
         [PetProfileEntityMock, PetProfileEntityMock],
       );
 
       const response = await useCases.createProfile(sampleProfile, mockedId);
 
-      expect(response).toBeFalsy();
+      expect(response).toStrictEqual(failMessage(Code.NOT_ALLOWED));
       expect(IPetProfileRepositoryMock.persist).not.toHaveBeenCalled();
     });
   });
@@ -148,10 +149,12 @@ describe('Pet profile use cases', () => {
         id: PetProfileEntityMock.id,
       });
 
-      expect(response).toStrictEqual({
-        name: PetProfileEntityMock.name,
-        birthday: PetProfileEntityMock.birthday,
-      });
+      expect(response).toStrictEqual(
+        successMessage({
+          name: PetProfileEntityMock.name,
+          birthday: PetProfileEntityMock.birthday,
+        }),
+      );
     });
   });
 

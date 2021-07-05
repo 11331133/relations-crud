@@ -11,6 +11,7 @@ import {
   GetAllFriendsSchema,
 } from './HasFriend.schema';
 import { IHasFriendRelRepository } from './IHasFriend.repository';
+import { Code, failMessage, successMessage } from '../common/ReturnMessage';
 
 export class HasFriendRelationsUseCases {
   constructor(
@@ -24,10 +25,10 @@ export class HasFriendRelationsUseCases {
   ) {
     this._validate(dto, CreateHasFriendRelationSchema);
 
-    if (dto.friendId === humanId) return false;
+    if (dto.friendId === humanId) return failMessage(Code.BAD_REQUEST);
     const relation = new HasFriendRelation(humanId, dto.friendId);
 
-    return await this._relationRepository.persist(relation);
+    await this._relationRepository.persist(relation);
   }
 
   public async deleteRelation(
@@ -36,24 +37,24 @@ export class HasFriendRelationsUseCases {
   ) {
     this._validate(dto, DeleteHasFriendRelationSchema);
 
-    return await this._relationRepository.deleteOne(humanId, dto.friendId);
+    await this._relationRepository.deleteOne(humanId, dto.friendId);
   }
 
   public async getAllFriends(dto: GetAllFriendsDTO, humanId: string) {
     this._validate(dto, GetAllFriendsSchema);
 
     const canAccess =
-      (await this._relationRepository.isFriend(dto.friendId, humanId)) ||
-      dto.friendId === humanId;
+      dto.friendId === humanId ||
+      (await this._relationRepository.isFriend(dto.friendId, humanId));
 
-    if (!canAccess) return false;
+    if (!canAccess) return failMessage(Code.FORBIDDEN);
 
     const friendRelations = await this._relationRepository.getAllFriends(
       humanId,
     );
 
-    return {
+    return successMessage({
       friendIds: friendRelations.map((relation) => relation.friendId),
-    };
+    });
   }
 }

@@ -1,5 +1,6 @@
 import { IGenerateId } from '../common/IGenerateId';
 import { IValidate } from '../common/IValidate';
+import { Code, failMessage, successMessage } from '../common/ReturnMessage';
 import { IHasFriendRelRepository } from '../HasFriend/IHasFriend.repository';
 import { HumanProfile } from './HumanProfile.entity';
 import {
@@ -36,14 +37,15 @@ export class HumanProfileUseCases {
     );
 
     await this._profileRepository.persist(profile);
-    return { id: profile.id };
+    return successMessage({ id: profile.id });
   }
 
   public async editProfile(dto: EditHumanProfileDTO, humanId: string) {
     this._validate(dto, EditHumanProfileSchema);
 
     const profile = await this._profileRepository.findOne(dto.id);
-    if (!profile || !this.isSamePerson(dto.id, humanId)) return false;
+    if (!profile || !this.isSamePerson(dto.id, humanId))
+      return failMessage(Code.FORBIDDEN);
 
     const editedProfile = new HumanProfile(
       dto.name || profile.name,
@@ -53,30 +55,30 @@ export class HumanProfileUseCases {
       dto.id,
     );
 
-    return await this._profileRepository.merge(editedProfile);
+    await this._profileRepository.merge(editedProfile);
   }
 
   public async getProfile(dto: GetHumanProfileDTO, humanId?: string) {
     this._validate(dto, GetHumanProfileSchema);
 
     const profile = await this._profileRepository.findOne(dto.id);
-    if (!profile) return false;
+    if (!profile) return failMessage(Code.NOT_FOUND);
     const isFriend = humanId
       ? await this._hasFriendRelationRepository.isFriend(profile.id, humanId)
       : false;
 
-    return {
+    return successMessage({
       name: profile.name,
       middlename: profile.middlename,
       surname: profile.surname,
       birthday: isFriend ? profile.birthday : null,
-    };
+    });
   }
 
   public async deleteProfile(dto: DeleteHumanProfileDTO, humanId: string) {
     this._validate(dto, DeleteHumanProfileSchema);
 
-    if (!this.isSamePerson(dto.id, humanId)) return false;
+    if (!this.isSamePerson(dto.id, humanId)) return failMessage(Code.FORBIDDEN);
 
     await this._profileRepository.deleteOne(dto.id);
   }

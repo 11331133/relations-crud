@@ -1,4 +1,5 @@
 import { IValidate } from '../common/IValidate';
+import { successMessage } from '../common/ReturnMessage';
 import {
   CreateLovesHumanRelationDTO,
   DeleteLovesHumanRelationDTO,
@@ -23,7 +24,7 @@ export class LovesHumanRelationUseCases {
 
     const relation = new LovesHumanRelation(dto.humanId, petId, dto.strength);
 
-    return await this._relationRepository.persist(relation);
+    await this._relationRepository.persist(relation);
   }
 
   public async editRelation(dto: EditLovesHumanRelationDTO, petId: string) {
@@ -37,7 +38,7 @@ export class LovesHumanRelationUseCases {
   public async deleteRelation(dto: DeleteLovesHumanRelationDTO, petId: string) {
     this._validate(dto, DeleteLovesHumanRelationSchema);
 
-    return await this._relationRepository.deleteOne(petId, dto.humanId);
+    await this._relationRepository.deleteOne(petId, dto.humanId);
   }
 
   public async getAllHumansPetLoves(petId: string) {
@@ -48,9 +49,11 @@ export class LovesHumanRelationUseCases {
     const relations = await this._relationRepository.getAllLovesHumanRelations(
       petId,
     );
-    return relations.map((relation) => ({
-      humanId: relation.humanId,
-      strength: relation.strength,
-    }));
+    return successMessage(
+      relations.map((relation) => ({
+        humanId: relation.humanId,
+        strength: relation.strength,
+      })),
+    );
   }
 }

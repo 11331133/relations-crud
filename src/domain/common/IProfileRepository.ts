@@ -1,6 +1,6 @@
 export interface IProfileRepository<T> {
-  persist(profile: T): Promise<boolean>;
-  merge(profile: T): Promise<boolean>;
+  persist(profile: T): Promise<void>;
+  merge(profile: T): Promise<void>;
   findOne(id: string): Promise<T | undefined>;
-  deleteOne(id: string): Promise<boolean>;
+  deleteOne(id: string): Promise<void>;
 }

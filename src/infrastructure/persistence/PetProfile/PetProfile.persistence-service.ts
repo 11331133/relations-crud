@@ -16,7 +16,7 @@ export class PetProfilePersistenceService implements IPetProfileRepository {
     private _transactionRunner: TransactionRunner,
   ) {}
 
-  public async persist(profile: PetProfile): Promise<boolean> {
+  public async persist(profile: PetProfile): Promise<void> {
     try {
       await Promise.all([
         this._relationalDBRepository.save(
@@ -30,14 +30,12 @@ export class PetProfilePersistenceService implements IPetProfileRepository {
         this._graphDBRepository.deleteOne(profile.id),
       ]);
     }
-    return true;
   }
 
-  public async merge(profile: PetProfile): Promise<boolean> {
+  public async merge(profile: PetProfile): Promise<void> {
     const entity = PetProfileMapper.mapToOrmEntity(profile);
 
     await this._relationalDBRepository.save(entity);
-    return true;
   }
 
   public async findOne(id: string): Promise<PetProfile> {
@@ -47,7 +45,7 @@ export class PetProfilePersistenceService implements IPetProfileRepository {
     return PetProfileMapper.mapToDomainEntity(entity);
   }
 
-  public async deleteOne(id: string): Promise<boolean> {
+  public async deleteOne(id: string): Promise<void> {
     const relationalDBcallback = async (manager: EntityManager) => {
       await manager.delete(PetProfileOrmEntity, { id });
     };
@@ -57,6 +55,5 @@ export class PetProfilePersistenceService implements IPetProfileRepository {
     };
 
     await this._transactionRunner.run(relationalDBcallback, graphDBcallback);
-    return true;
   }
 }

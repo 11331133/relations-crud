@@ -7,22 +7,20 @@ import { Neo4jClient } from '../common/neo4jclient';
 export class HasFriendPersistenceService implements IHasFriendRelRepository {
   constructor(private _neo4jclient: Neo4jClient) {}
 
-  public async persist(relation: HasFriendRelation): Promise<boolean> {
+  public async persist(relation: HasFriendRelation): Promise<void> {
     const query =
       'MATCH (user:HumanProfile {id: $userId}), ' +
       '(friend:HumanProfile {id: $friendId}) ' +
-      'MERGE (user)-[relation:HAS_FRIEND]->(friend)';
+      'MERGE (user)-[:HAS_FRIEND]->(friend)';
     const params = {
       userId: relation.whoHasFriend,
       friendId: relation.friendId,
     };
 
-    const result = await this._neo4jclient.write(query, params);
-
-    return true;
+    await this._neo4jclient.write(query, params);
   }
 
-  public async deleteOne(from: string, to: string): Promise<boolean> {
+  public async deleteOne(from: string, to: string): Promise<void> {
     const query =
       'MATCH (:HumanProfile {id: $userId})' +
       '-[relation:HAS_FRIEND]->' +
@@ -31,7 +29,6 @@ export class HasFriendPersistenceService implements IHasFriendRelRepository {
     const params = { userId: from, friendId: to };
 
     await this._neo4jclient.write(query, params);
-    return true;
   }
 
   public async isFriend(userId: string, friendId: string): Promise<boolean> {
@@ -51,7 +48,7 @@ export class HasFriendPersistenceService implements IHasFriendRelRepository {
       'MATCH (user:HumanProfile {id: $userId})' +
       '-[:HAS_FRIEND]->(friend) ' +
       'RETURN friend.id';
-    const params = { id: humanId };
+    const params = { userId: humanId };
 
     const response = await this._neo4jclient.read(query, params);
 

@@ -1,6 +1,7 @@
 import * as faker from 'faker';
 
 import { validate } from '../../../infrastructure/adapters/validate.adapter';
+import { Code, failMessage, successMessage } from '../../common/ReturnMessage';
 import { HasFriendRelationsUseCases } from '../HasFriend.usecases';
 import { IHasFriendRelRepositoryMock } from './HasFriend.mocks';
 
@@ -32,13 +33,13 @@ describe('HasFriend Relation UseCases', () => {
       expect(IHasFriendRelRepositoryMock.persist).toHaveBeenCalled();
     });
 
-    it('returns false if trying to create relationship with itself', async () => {
+    it('returns failMessage if trying to create relationship with itself', async () => {
       const result = await useCases.createRelation(
         { friendId: mockedId1 },
         mockedId1,
       );
 
-      expect(result).toBeFalsy();
+      expect(result).toStrictEqual(failMessage(Code.BAD_REQUEST));
     });
   });
 
@@ -87,9 +88,11 @@ describe('HasFriend Relation UseCases', () => {
         mockedId1,
       );
 
-      expect(result).toStrictEqual({
-        friendIds: friendListMock.map((friend) => friend.friendId),
-      });
+      expect(result).toStrictEqual(
+        successMessage({
+          friendIds: friendListMock.map((friend) => friend.friendId),
+        }),
+      );
     });
 
     it("returns user's friend's friends", async () => {
@@ -103,9 +106,11 @@ describe('HasFriend Relation UseCases', () => {
         mockedId2,
       );
 
-      expect(result).toStrictEqual({
-        friendIds: friendListMock.map((friend) => friend.friendId),
-      });
+      expect(result).toStrictEqual(
+        successMessage({
+          friendIds: friendListMock.map((friend) => friend.friendId),
+        }),
+      );
     });
 
     it('if person does not have HAS_FRIEND relation with user, does not return friend list', async () => {
@@ -119,9 +124,7 @@ describe('HasFriend Relation UseCases', () => {
         mockedId2,
       );
 
-      expect(result).not.toStrictEqual({
-        friendIds: friendListMock.map((friend) => friend.friendId),
-      });
+      expect(result).toStrictEqual(failMessage(Code.FORBIDDEN));
     });
   });
 });

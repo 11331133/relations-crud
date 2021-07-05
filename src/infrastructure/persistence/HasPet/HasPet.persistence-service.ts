@@ -7,28 +7,25 @@ import { Neo4jClient } from '../common/neo4jclient';
 export class HasPetPersistenceService implements IHasPetRepository {
   constructor(private _neo4jClient: Neo4jClient) {}
 
-  public async persist(relation: HasPetRelation): Promise<boolean> {
+  public async persist(relation: HasPetRelation): Promise<void> {
     const query =
       'MATCH (human:HumanProfile {id: $humanId}), ' +
       '(pet:PetProfile {id: $petId}) ' +
-      'MERGE (human)-[relation:HAS_PET]->(pet) ' +
-      'RETURN relation';
+      'MERGE (human)-[:HAS_PET]->(pet)';
     const params = { humanId: relation.owner, petId: relation.petId };
 
-    const result = await this._neo4jClient.write(query, params);
-    return true;
+    await this._neo4jClient.write(query, params);
   }
 
-  public async deleteOne(humanId: string, petId: string): Promise<boolean> {
+  public async deleteOne(humanId: string, petId: string): Promise<void> {
     const query =
-      'MATCH (human:HumanProfile {id: $humanId})' +
+      'MATCH (:HumanProfile {id: $humanId})' +
       '-[relation:HAS_PET]->' +
-      '(pet:PetProfile {id: $petId}) ' +
+      '(:PetProfile {id: $petId}) ' +
       'DELETE relation';
     const params = { humanId, petId };
 
     await this._neo4jClient.write(query, params);
-    return true;
   }
 
   public async getAllHasPetRelations(

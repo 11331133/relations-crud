@@ -8,6 +8,7 @@ import {
 } from './HumanProfile.mocks';
 import { IHasFriendRelRepositoryMock } from '../../HasFriend/__tests__/HasFriend.mocks';
 import { IGenerateIdMock } from '../../common/__tests__/common.mocks';
+import { Code, failMessage, successMessage } from '../../common/ReturnMessage';
 
 describe('HumanProfile use cases', () => {
   const mockedId = faker.datatype.uuid();
@@ -127,12 +128,14 @@ describe('HumanProfile use cases', () => {
 
       const profile = await useCases.getProfile({ id: mockedId }, mockedId2);
 
-      expect(profile).toStrictEqual({
-        name: HumanProfileEntityMock.name,
-        middlename: HumanProfileEntityMock.middlename,
-        surname: HumanProfileEntityMock.surname,
-        birthday: HumanProfileEntityMock.birthday,
-      });
+      expect(profile).toStrictEqual(
+        successMessage({
+          name: HumanProfileEntityMock.name,
+          middlename: HumanProfileEntityMock.middlename,
+          surname: HumanProfileEntityMock.surname,
+          birthday: HumanProfileEntityMock.birthday,
+        }),
+      );
     });
 
     it("does not return birthday if profile's owner has not HAS_FRIEND relation with user", async () => {
@@ -143,12 +146,14 @@ describe('HumanProfile use cases', () => {
 
       const profile = await useCases.getProfile({ id: mockedId }, mockedId2);
 
-      expect(profile).toStrictEqual({
-        name: HumanProfileEntityMock.name,
-        middlename: HumanProfileEntityMock.middlename,
-        surname: HumanProfileEntityMock.surname,
-        birthday: null,
-      });
+      expect(profile).toStrictEqual(
+        successMessage({
+          name: HumanProfileEntityMock.name,
+          middlename: HumanProfileEntityMock.middlename,
+          surname: HumanProfileEntityMock.surname,
+          birthday: null,
+        }),
+      );
     });
 
     it('does not return birthday if users profile is not given', async () => {
@@ -159,12 +164,14 @@ describe('HumanProfile use cases', () => {
 
       const profile = await useCases.getProfile({ id: mockedId });
 
-      expect(profile).toStrictEqual({
-        name: HumanProfileEntityMock.name,
-        middlename: HumanProfileEntityMock.middlename,
-        surname: HumanProfileEntityMock.surname,
-        birthday: null,
-      });
+      expect(profile).toStrictEqual(
+        successMessage({
+          name: HumanProfileEntityMock.name,
+          middlename: HumanProfileEntityMock.middlename,
+          surname: HumanProfileEntityMock.surname,
+          birthday: null,
+        }),
+      );
     });
   });
 
@@ -179,17 +186,17 @@ describe('HumanProfile use cases', () => {
       }).rejects.toThrow();
     });
 
-    it("return false when user want to delete another person's profile", async () => {
+    it("return fail message when user want to delete another person's profile", async () => {
       const result = await useCases.deleteProfile(
         { id: faker.datatype.uuid() },
         mockedId,
       );
 
-      expect(result).toBe(false);
+      expect(result).toStrictEqual(failMessage(Code.FORBIDDEN));
       expect(IHumanProfileRepositoryMock.deleteOne).not.toBeCalled();
     });
 
-    it('return false when user profile is not given', async () => {
+    it('return fail message when user profile is not given', async () => {
       const result = await useCases.deleteProfile(
         {
           id: faker.datatype.uuid(),
@@ -197,7 +204,7 @@ describe('HumanProfile use cases', () => {
         mockedId,
       );
 
-      expect(result).toBe(false);
+      expect(result).toStrictEqual(failMessage(Code.FORBIDDEN));
       expect(IHumanProfileRepositoryMock.deleteOne).not.toBeCalled();
     });
 

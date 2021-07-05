@@ -18,7 +18,7 @@ export class HumanProfilePersistenceService implements IHumanProfileRepository {
     private _transactionRunner: TransactionRunner,
   ) {}
 
-  public async persist(profile: HumanProfile): Promise<boolean> {
+  public async persist(profile: HumanProfile): Promise<void> {
     try {
       await Promise.all([
         this._relationalDBRepository.save(profile),
@@ -30,17 +30,15 @@ export class HumanProfilePersistenceService implements IHumanProfileRepository {
         this._graphDBRepository.deleteOne(profile.id),
       ]);
     }
-    return true;
   }
 
-  public async merge(profile: HumanProfile): Promise<boolean> {
+  public async merge(profile: HumanProfile): Promise<void> {
     await this._relationalDBRepository.save(
       HumanProfileMapper.mapToOrmEntity(profile),
     );
-    return true;
   }
 
-  public async deleteOne(id: string): Promise<boolean> {
+  public async deleteOne(id: string): Promise<void> {
     const relationalDBcallback = async (manager: EntityManager) => {
       await manager.delete(HumanProfileOrmEntity, { id });
     };
@@ -50,7 +48,6 @@ export class HumanProfilePersistenceService implements IHumanProfileRepository {
     };
 
     await this._transactionRunner.run(relationalDBcallback, graphDBcallback);
-    return true;
   }
 
   public async findOne(id: string): Promise<HumanProfile> {

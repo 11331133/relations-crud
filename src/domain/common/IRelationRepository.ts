@@ -1,4 +1,4 @@
 export interface IRelationRepository<T> {
-  persist(relation: T): Promise<boolean>;
-  deleteOne(from: string, to: string): Promise<boolean>;
+  persist(relation: T): Promise<void>;
+  deleteOne(from: string, to: string): Promise<void>;
 }

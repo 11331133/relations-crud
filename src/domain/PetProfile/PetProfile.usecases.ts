@@ -16,6 +16,7 @@ import {
 import { PetProfile } from './PetProfile.entity';
 import { IHasPetRepository } from '../HasPet/IHasPet.repository';
 import { HasPetRelation } from '../HasPet/HasPet.relation';
+import { Code, failMessage, successMessage } from '../common/ReturnMessage';
 
 export class PetProfileUseCases {
   constructor(
@@ -31,7 +32,7 @@ export class PetProfileUseCases {
     const existingPets = await this._hasPetRelationRepository.getAllHasPetRelations(
       humanId,
     );
-    if (existingPets.length >= 2) return false;
+    if (existingPets.length >= 2) return failMessage(Code.NOT_ALLOWED);
 
     const petId = await this._generateId();
     const profile = new PetProfile(dto.name, new Date(dto.birthday), petId);
@@ -45,16 +46,17 @@ export class PetProfileUseCases {
       await this._hasPetRelationRepository.deleteOne(humanId, petId);
     }
 
-    return { id: petId };
+    return successMessage({ id: petId });
   }
 
   public async editProfile(dto: EditPetProfileDTO, humanId: string) {
     this._validate(dto, EditPetProfileSchema);
 
     const petProfile = await this._profileRepository.findOne(dto.id);
-    if (!petProfile) return false;
+    if (!petProfile) return failMessage(Code.NOT_FOUND);
 
-    if (!(await this.isPetOwnedByUser(humanId, petProfile.id))) return false;
+    if (!(await this.isPetOwnedByUser(humanId, petProfile.id)))
+      return failMessage(Code.FORBIDDEN);
 
     const editedProfile = new PetProfile(
       dto.name ? dto.name : petProfile.name,
@@ -62,27 +64,28 @@ export class PetProfileUseCases {
       petProfile.id,
     );
 
-    return await this._profileRepository.merge(editedProfile);
+    await this._profileRepository.merge(editedProfile);
   }
 
   public async getProfile(dto: GetPetProfileDTO) {
     this._validate(dto, GetPetProfileSchema);
 
     const petProfile = await this._profileRepository.findOne(dto.id);
-    if (!petProfile) return false;
+    if (!petProfile) return failMessage(Code.NOT_FOUND);
 
-    return {
+    return successMessage({
       name: petProfile.name,
       birthday: petProfile.birthday,
-    };
+    });
   }
 
   public async deleteProfile(dto: DeletePetProfileDTO, humanId: string) {
     this._validate(dto, DeletePetProfileSchema);
 
-    if (!(await this.isPetOwnedByUser(humanId, dto.id))) return false;
+    if (!(await this.isPetOwnedByUser(humanId, dto.id)))
+      return failMessage(Code.FORBIDDEN);
 
-    return await this._profileRepository.deleteOne(dto.id);
+    await this._profileRepository.deleteOne(dto.id);
   }
 
   private async isPetOwnedByUser(userId: string, petId: string) {
