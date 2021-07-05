@@ -1,7 +1,7 @@
 import { ISchema } from '../common/ISchema';
 
-export const CreateLoveHumanRelationSchema: ISchema = {
-  $id: 'CreateLoveHumanRelationSchema',
+export const CreateLovesHumanRelationSchema: ISchema = {
+  $id: 'CreateLovesHumanRelationSchema',
   type: 'object',
   properties: {
     humanId: {
@@ -18,8 +18,8 @@ export const CreateLoveHumanRelationSchema: ISchema = {
   additionalProperties: false,
 };
 
-export const DeleteLoveHumanRelationSchema: ISchema = {
-  $id: 'DeleteLoveHumanRelationSchema',
+export const DeleteLovesHumanRelationSchema: ISchema = {
+  $id: 'DeleteLovesHumanRelationSchema',
   type: 'object',
   properties: {
     humanId: {
@@ -31,8 +31,8 @@ export const DeleteLoveHumanRelationSchema: ISchema = {
   additionalProperties: false,
 };
 
-export const EditLoveHumanRelationSchema: ISchema = {
-  $id: 'EditLoveHumanRelationSchema',
+export const EditLovesHumanRelationSchema: ISchema = {
+  $id: 'EditLovesHumanRelationSchema',
   type: 'object',
   properties: {
     humanId: {

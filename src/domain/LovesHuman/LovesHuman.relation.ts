@@ -1,4 +1,4 @@
-export class LoveHumanRelation {
+export class LovesHumanRelation {
   constructor(
     private readonly _humanId: string,
     private readonly _petId: string,

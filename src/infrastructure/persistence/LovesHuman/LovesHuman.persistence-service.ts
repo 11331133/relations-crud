@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { ILoveHumanRepository } from '../../../domain/LoveHuman/ILoveHuman.repository';
-import { LoveHumanRelation } from '../../../domain/LoveHuman/LoveHuman.relation';
+import { ILovesHumanRepository } from '../../../domain/LovesHuman/ILovesHuman.repository';
+import { LovesHumanRelation } from '../../../domain/LovesHuman/LovesHuman.relation';
 import { Neo4jClient } from '../common/neo4jclient';
 
 @Injectable()
-export class LoveHumanPersistenceService implements ILoveHumanRepository {
+export class LovesHumanPersistenceService implements ILovesHumanRepository {
   constructor(private _neo4jClient: Neo4jClient) {}
 
-  public async persist(relation: LoveHumanRelation): Promise<boolean> {
+  public async persist(relation: LovesHumanRelation): Promise<boolean> {
     const query =
       'MATCH (pet:PetProfile {id: $petId}), ' +
       '(human:HumanProfile {id: $humanId}) ' +
-      'MERGE (pet)-[relation:LOVE_HUMAN {strength: $strength}]->(human) ' +
+      'MERGE (pet)-[relation:LOVES_HUMAN {strength: $strength}]->(human) ' +
       'RETURN relation';
     const params = {
       petId: relation.petId,
@@ -23,10 +23,10 @@ export class LoveHumanPersistenceService implements ILoveHumanRepository {
     return true;
   }
 
-  public async merge(relation: LoveHumanRelation): Promise<boolean> {
+  public async merge(relation: LovesHumanRelation): Promise<boolean> {
     const query =
       'MATCH (pet:PetProfile {id: $petId})' +
-      '-[relation:LOVE_HUMAN]->' +
+      '-[relation:LOVES_HUMAN]->' +
       '(human:HumanProfile {id: $humanId}) ' +
       'SET relation.strength = $strength ' +
       'RETURN relation';
@@ -43,7 +43,7 @@ export class LoveHumanPersistenceService implements ILoveHumanRepository {
   public async deleteOne(petId: string, humanId: string): Promise<boolean> {
     const query =
       'MATCH (pet:PetProfile {id: $petId})' +
-      '-[relation:LOVE_HUMAN]->' +
+      '-[relation:LOVES_HUMAN]->' +
       '(human:HumanProfile {id: $humanId}) ' +
       'DELETE relation';
 
@@ -56,12 +56,12 @@ export class LoveHumanPersistenceService implements ILoveHumanRepository {
     return true;
   }
 
-  public async getAllLoveHumanRelations(
+  public async getAllLovesHumanRelations(
     petId: string,
-  ): Promise<LoveHumanRelation[]> {
+  ): Promise<LovesHumanRelation[]> {
     const query =
       'MATCH (:PetProfile {id: $petId})' +
-      '-[relation:LOVE_HUMAN]->' +
+      '-[relation:LOVES_HUMAN]->' +
       '(human)' +
       'RETURN human.id, relation.strength';
     const params = { petId };
@@ -69,7 +69,7 @@ export class LoveHumanPersistenceService implements ILoveHumanRepository {
     const result = await this._neo4jClient.read(query, params);
     return result.records.map(
       (record) =>
-        new LoveHumanRelation(
+        new LovesHumanRelation(
           record.get('human.id'),
           petId,
           record.get('relation.strength'),

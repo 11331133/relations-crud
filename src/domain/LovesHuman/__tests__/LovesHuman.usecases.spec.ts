@@ -1,11 +1,11 @@
 import * as faker from 'faker';
 import { validate } from '../../../infrastructure/adapters/validate.adapter';
-import { LoveHumanRelationUseCases } from '../LoveHuman.usecases';
-import { ILoveHumanRepositoryMock } from './LoveHuman.mocks';
+import { LovesHumanRelationUseCases } from '../LovesHuman.usecases';
+import { ILovesHumanRepositoryMock } from './LovesHuman.mocks';
 
-describe('LoveHuman use cases', () => {
-  const useCases = new LoveHumanRelationUseCases(
-    ILoveHumanRepositoryMock,
+describe('LovesHuman use cases', () => {
+  const useCases = new LovesHumanRelationUseCases(
+    ILovesHumanRepositoryMock,
     validate,
   );
 
@@ -45,7 +45,7 @@ describe('LoveHuman use cases', () => {
     it('persists relation if data is valid', async () => {
       await useCases.createRelation(sampleRelation, mockedId);
 
-      expect(ILoveHumanRepositoryMock.persist).toHaveBeenCalled();
+      expect(ILovesHumanRepositoryMock.persist).toHaveBeenCalled();
     });
   });
 
@@ -78,7 +78,7 @@ describe('LoveHuman use cases', () => {
     it('merges relation when data is valid', async () => {
       await useCases.editRelation(sampleRelation, mockedId);
 
-      expect(ILoveHumanRepositoryMock.merge).toHaveBeenCalled();
+      expect(ILovesHumanRepositoryMock.merge).toHaveBeenCalled();
     });
   });
 
@@ -105,7 +105,7 @@ describe('LoveHuman use cases', () => {
         mockedId,
       );
 
-      expect(ILoveHumanRepositoryMock.deleteOne).toHaveBeenCalled();
+      expect(ILovesHumanRepositoryMock.deleteOne).toHaveBeenCalled();
     });
   });
 });

@@ -8,7 +8,7 @@ import { AuthorizationGuard } from './infrastructure/webserver/common/Authorizat
 import { HasFriendWebModule } from './infrastructure/webserver/HasFriend/HasFriend.web-module';
 import { HasPetWebModule } from './infrastructure/webserver/HasPet/HasPet.web-module';
 import { HumanProfileWebModule } from './infrastructure/webserver/HumanProfile/HumanProfile.web-module';
-import { LoveHumanWebModule } from './infrastructure/webserver/LoveHuman/LoveHuman.web-module';
+import { LovesHumanWebModule } from './infrastructure/webserver/LovesHuman/LovesHuman.web-module';
 import { PetProfileWebModule } from './infrastructure/webserver/PetProfile/PetProfile.web-module';
 
 @Module({
@@ -34,7 +34,7 @@ import { PetProfileWebModule } from './infrastructure/webserver/PetProfile/PetPr
     AuthentificationWebModule,
     HumanProfileWebModule,
     PetProfileWebModule,
-    LoveHumanWebModule,
+    LovesHumanWebModule,
     HasPetWebModule,
     HasFriendWebModule,
   ],
