@@ -17,16 +17,21 @@ export enum Code {
   NOT_ALLOWED = 405,
 }
 
+export enum Status {
+  success = 'success',
+  fail = 'fail',
+}
+
 export function successMessage(data?: object) {
   return {
-    status: 'success',
+    status: Status.success,
     data,
   };
 }
 
 export function failMessage(code: Code) {
   return {
-    status: 'fail',
+    status: Status.fail,
     code,
   };
 }

@@ -2,6 +2,7 @@ import * as jwt from 'jsonwebtoken';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Role } from '../webserver/common/Roles.decorator';
+import { successMessage } from '../../domain/common/ReturnMessage';
 
 @Injectable()
 export class AuthentificationService {
@@ -10,7 +11,7 @@ export class AuthentificationService {
   public async login(userId: string, role: Role) {
     // complex authentification logic
 
-    return {
+    return successMessage({
       token: jwt.sign(
         {
           id: userId,
@@ -22,6 +23,6 @@ export class AuthentificationService {
           expiresIn: '1h',
         },
       ),
-    };
+    });
   }
 }

@@ -10,25 +10,29 @@ export class AuthentificationGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     let token = request.headers.authorization;
 
-    if (token) {
+    if (!token) return true;
+    else {
       if (token.startsWith('Bearer')) {
         token = token.slice(7);
       }
 
-      const payload = jwt.verify(
-        token,
-        this._configService.get('JWT_SECRET_KEY'),
-        {
-          algorithms: this._configService
-            .get('JWT_VERIFY_ALGORITHMS')
-            .split(','),
-        },
-      ) as jwt.JwtPayload;
+      try {
+        const payload = jwt.verify(
+          token,
+          this._configService.get('JWT_SECRET_KEY'),
+          {
+            algorithms: this._configService
+              .get('JWT_VERIFY_ALGORITHMS')
+              .split(','),
+          },
+        ) as jwt.JwtPayload;
 
-      request.userRole = payload.role;
-      request.userId = payload.id;
+        request.userRole = payload.role;
+        request.userId = payload.id;
+        return true;
+      } catch (error) {
+        return false;
+      }
     }
-
-    return true;
   }
 }

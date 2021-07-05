@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthentificationGuard } from './infrastructure/webserver/common/Auth/Authentification.guard';
 import { AuthentificationWebModule } from './infrastructure/webserver/common/Auth/Authentification.web-module';
 import { AuthorizationGuard } from './infrastructure/webserver/common/Authorization.guard';
+import { StatusCodeInterceptor } from './infrastructure/webserver/common/StatusCode.interceptor';
 import { HasFriendWebModule } from './infrastructure/webserver/HasFriend/HasFriend.web-module';
 import { HasPetWebModule } from './infrastructure/webserver/HasPet/HasPet.web-module';
 import { HumanProfileWebModule } from './infrastructure/webserver/HumanProfile/HumanProfile.web-module';
@@ -46,6 +47,10 @@ import { PetProfileWebModule } from './infrastructure/webserver/PetProfile/PetPr
     {
       provide: APP_GUARD,
       useClass: AuthorizationGuard,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: StatusCodeInterceptor,
     },
   ],
 })
