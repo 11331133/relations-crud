@@ -30,9 +30,9 @@ Basic CRUD with relations, built on NestJS, Neo4j, TypeORM, JSON Schema
 
 **Possible solution**: 
 1) Generic use cases\repositories, for example  HasPetRelation.create -> Relation.Create, HasPetRelationRepository -> RelationRepository
-2) Object Graph Mapper (OGM). 
+2) Object Graph Mapper (OGM) as abstraction over Cypher queries can decrease amount of repeatable code
 
-**Why generic use cases\repositories are not implemented**: Use cases\repositories are domain-specific (?) And because of that, generic use cases\repositories are vulnerable to any custom business logic. With future addition of business logic, this problem will be potentially solved by itself (?)
+**Why generic use cases\repositories are not implemented**: 1) Abstraction leak (For example, `HasFriendRelation.deleteOne(relation: Relation) -> Relation.DeleteOne(label?: string, from: string, to: string, direction: Direction, properties?: Record<string, any>)` 2) Generic use cases\repositories are vulnerable to any custom business logic (so maintaining of generic version can be harder than similar, but specific versions) With future addition of business logic, this problem will be potentially solved by itself (?)
 
 Related question:  [Generic Repository or Specific Repository for each entity?](https://stackoverflow.com/questions/51771407/generic-repository-or-specific-repository-for-each-entity)
 
