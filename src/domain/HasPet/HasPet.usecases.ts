@@ -1,5 +1,5 @@
 import { IValidate } from '../common/IValidate';
-import { successMessage } from '../common/ReturnMessage';
+import { Code, failMessage, successMessage } from '../common/ReturnMessage';
 import { HasPetRelation } from './HasPet.relation';
 import {
   CreateHasPetRelationSchema,
@@ -19,6 +19,11 @@ export class HasPetRelationUseCases {
 
   public async createRelation(dto: CreateHasPetRelationDTO, humanId: string) {
     this._validate(dto, CreateHasPetRelationSchema);
+
+    const existingPets = await this._relationRepository.getAllHasPetRelations(
+      humanId,
+    );
+    if (existingPets.length >= 2) return failMessage(Code.NOT_ALLOWED);
 
     const relation = new HasPetRelation(humanId, dto.petId);
 

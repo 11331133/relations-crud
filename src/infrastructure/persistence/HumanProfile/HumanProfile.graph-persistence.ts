@@ -15,7 +15,7 @@ export class HumanProfileGraphPersistence {
   }
 
   public async deleteOne(humanId: string) {
-    const query = 'MATCH (p: HumanProfile {id: $humanId})' + 'DETACH DELETE p';
+    const query = 'MATCH (p: HumanProfile {id: $humanId}) DETACH DELETE p';
     const params = { humanId };
 
     await this._neo4jclient.write(query, params);
@@ -25,7 +25,7 @@ export class HumanProfileGraphPersistence {
     queryRunner: Transaction,
     humanId: string,
   ) {
-    const query = 'MATCH (p: HumanProfile {id: $humanId})' + 'DETACH DELETE p';
+    const query = 'MATCH (p: HumanProfile {id: $humanId}) DETACH DELETE p';
     const params = { humanId };
 
     await queryRunner.run(query, params);

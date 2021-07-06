@@ -140,7 +140,7 @@ describe('Pet profile use cases', () => {
       }).rejects.toThrow();
     });
 
-    it('returns name and birthday if data is valid', async () => {
+    it('returns name and age if data is valid', async () => {
       IPetProfileRepositoryMock.findOne.mockResolvedValueOnce(
         PetProfileEntityMock,
       );
@@ -152,7 +152,7 @@ describe('Pet profile use cases', () => {
       expect(response).toStrictEqual(
         successMessage({
           name: PetProfileEntityMock.name,
-          birthday: PetProfileEntityMock.birthday,
+          age: PetProfileEntityMock.age,
         }),
       );
     });

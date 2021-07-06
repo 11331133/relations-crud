@@ -1,5 +1,7 @@
 import * as faker from 'faker';
 import { validate } from '../../../infrastructure/adapters/validate.adapter';
+import { Code, failMessage } from '../../common/ReturnMessage';
+import { HasPetRelation } from '../HasPet.relation';
 import { HasPetRelationUseCases } from '../HasPet.usecases';
 import { IHasPetRelationRepositoryMock } from './HasPet.mocks';
 
@@ -29,10 +31,27 @@ describe('HasPet usecases', () => {
       }).rejects.toThrow();
     });
 
-    it('persists relation when data is valid', async () => {
+    it('persists relation when data is valid and user has < 2 pets', async () => {
+      IHasPetRelationRepositoryMock.getAllHasPetRelations.mockResolvedValueOnce(
+        [],
+      );
+
       await useCases.createRelation(sampleRelation, mockedId);
 
       expect(IHasPetRelationRepositoryMock.persist).toHaveBeenCalled();
+    });
+
+    it('returns failMessage if user allready has 2 pets', async () => {
+      IHasPetRelationRepositoryMock.getAllHasPetRelations.mockResolvedValueOnce(
+        [
+          new HasPetRelation(mockedId, faker.datatype.uuid()),
+          new HasPetRelation(mockedId, faker.datatype.uuid()),
+        ],
+      );
+
+      const response = await useCases.createRelation(sampleRelation, mockedId);
+
+      expect(response).toStrictEqual(failMessage(Code.NOT_ALLOWED));
     });
   });
 

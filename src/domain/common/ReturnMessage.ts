@@ -1,14 +1,3 @@
-export type SuccessMessage = {
-  status: 'success';
-  data: object;
-};
-
-export type FailMessage = {
-  status: 'fail';
-  code: Code;
-  reason: string;
-};
-
 export enum Code {
   BAD_REQUEST = 400,
   UNAUTHORIZED = 401,
@@ -22,7 +11,7 @@ export enum Status {
   fail = 'fail',
 }
 
-export function successMessage(data?: object) {
+export function successMessage(data?: Record<string, unknown> | unknown[]) {
   return {
     status: Status.success,
     data,

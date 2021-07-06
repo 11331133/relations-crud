@@ -15,14 +15,14 @@ export class PetProfileGraphPersistence {
   }
 
   public async deleteOne(PetId: string) {
-    const query = 'MATCH (p: PetProfile {id: $PetId})' + 'DETACH DELETE p';
+    const query = 'MATCH (p: PetProfile {id: $PetId}) DETACH DELETE p';
     const params = { PetId };
 
     await this._neo4jclient.write(query, params);
   }
 
   public async deleteOneInTransaction(queryRunner: Transaction, PetId: string) {
-    const query = 'MATCH (p: PetProfile {id: $PetId})' + 'DETACH DELETE p';
+    const query = 'MATCH (p: PetProfile {id: $PetId}) DETACH DELETE p';
     const params = { PetId };
 
     await queryRunner.run(query, params);

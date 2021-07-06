@@ -75,7 +75,7 @@ export class PetProfileUseCases {
 
     return successMessage({
       name: petProfile.name,
-      birthday: petProfile.birthday,
+      age: petProfile.age,
     });
   }
 

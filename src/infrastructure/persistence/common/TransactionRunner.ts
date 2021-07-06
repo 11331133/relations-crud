@@ -1,11 +1,8 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/typeorm';
 import { Transaction } from 'neo4j-driver-core';
 import { EntityManager } from 'typeorm';
-import {
-  IQueryRunnerFactory,
-  IQueryRunnerFactorySymbol,
-} from './IQueryRunnerFactory.typeorm';
+import { IQueryRunnerFactory } from './IQueryRunnerFactory.typeorm';
 import { Neo4jClient } from './neo4jclient';
 
 @Injectable()
