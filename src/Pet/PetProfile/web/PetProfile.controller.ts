@@ -13,7 +13,6 @@ import {
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiMethodNotAllowedResponse,
-  ApiNotAcceptableResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -41,7 +40,10 @@ export class PetProfileController {
 
   @Post()
   @Roles({ roles: [Role.Human] })
-  @ApiOperation({ summary: "Creates Pet's profile" })
+  @ApiOperation({
+    summary: "Creates Pet's profile",
+    description: 'Valid token with Role.Human is required',
+  })
   @ApiBearerAuth()
   @ApiBody({ schema: CreatePetProfileSchema as SchemaObject })
   @ApiCreatedResponse({ description: "Successfully created pet's profile" })
@@ -56,9 +58,15 @@ export class PetProfileController {
 
   @Put()
   @Roles({ roles: [Role.Human] })
-  @ApiOperation({ summary: "Edit Pet's profile" })
+  @ApiOperation({
+    summary: "Edit Pet's profile",
+    description: 'Valid token with Role.Human is required',
+  })
   @ApiBearerAuth()
-  @ApiBody({ schema: EditPetProfileSchema as SchemaObject })
+  @ApiBody({
+    schema: EditPetProfileSchema as SchemaObject,
+    description: 'Besides ID, at least one another property is required',
+  })
   @ApiOkResponse({ description: "Successfully edited pet's profile" })
   @ApiForbiddenResponse({
     description:
@@ -81,7 +89,10 @@ export class PetProfileController {
 
   @Delete(':id')
   @Roles({ roles: [Role.Human] })
-  @ApiOperation({ summary: "Delete Pet's profile" })
+  @ApiOperation({
+    summary: "Delete Pet's profile",
+    description: 'Valid token with Role.Human is required',
+  })
   @ApiBearerAuth()
   @ApiOkResponse({ description: "Successfully deleted Pet's profile" })
   @ApiForbiddenResponse({

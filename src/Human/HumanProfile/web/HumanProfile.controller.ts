@@ -38,7 +38,7 @@ export class HumanProfileController {
   constructor(private _useCases: HumanProfileUseCases) {}
 
   @Post()
-  @ApiOperation({ summary: "Creates Human's profile" })
+  @ApiOperation({ summary: "Create Human's profile" })
   @ApiBody({ schema: CreateHumanProfileSchema as SchemaObject })
   @ApiCreatedResponse({ description: 'Profile successfully created' })
   @ApiForbiddenResponse({ description: 'Validation error' })
@@ -48,7 +48,10 @@ export class HumanProfileController {
 
   @Put()
   @Roles({ roles: [Role.Human] })
-  @ApiOperation({ summary: "Updates Human's profile data" })
+  @ApiOperation({
+    summary: "Update Human's profile data",
+    description: 'Valid token with Role.Human is required',
+  })
   @ApiBody({
     schema: EditHumanProfileSchema as SchemaObject,
     description: 'Besides ID, at least one another property is required',
@@ -65,7 +68,10 @@ export class HumanProfileController {
 
   @Get(':id')
   @Roles({ roles: [Role.Human], optional: true })
-  @ApiOperation({ summary: "Retrieves Human's profile" })
+  @ApiOperation({
+    summary: "Retrieve Human's profile",
+    description: 'Optional valid token with Role.Human can be given',
+  })
   @ApiBearerAuth()
   @ApiOkResponse({ description: "Successfully retrieved Human's profile" })
   @ApiNotFoundResponse({ description: "Human's profile not found" })
@@ -78,7 +84,10 @@ export class HumanProfileController {
 
   @Delete(':id')
   @Roles({ roles: [Role.Human] })
-  @ApiOperation({ summary: "Deletes Human's profile" })
+  @ApiOperation({
+    summary: "Delete Human's profile",
+    description: 'Valid token with Role.Human is required',
+  })
   @ApiBearerAuth()
   @ApiOkResponse({ description: 'Successfully executed request for deletion' })
   @ApiForbiddenResponse({ description: 'Validation error' })

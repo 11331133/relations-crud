@@ -27,7 +27,7 @@ export const DeleteHasFriendRelationSchema: ISchema = {
 };
 
 export const GetAllFriendsSchema: ISchema = {
-  $id: 'GetAllFriendsSchemaSchema',
+  $id: 'GetAllFriendsSchema',
   type: 'object',
   properties: {
     friendId: {
