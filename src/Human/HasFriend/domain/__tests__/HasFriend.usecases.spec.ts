@@ -1,5 +1,9 @@
 import * as faker from 'faker';
-import { Code, failMessage, successMessage } from '../../../../_common/domain/ReturnMessage';
+import {
+  Code,
+  failMessage,
+  successMessage,
+} from '../../../../_common/domain/ReturnMessage';
 
 import { validate } from '../../../../_common/infrastructure/adapters/validate.adapter';
 import { HasFriendRelationsUseCases } from '../HasFriend.usecases';

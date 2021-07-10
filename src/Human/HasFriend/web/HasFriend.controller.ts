@@ -1,9 +1,12 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { CreateHasFriendRelationDTO, DeleteHasFriendRelationDTO, GetAllFriendsDTO } from '../domain/HasFriend.dto';
+import {
+  CreateHasFriendRelationDTO,
+  DeleteHasFriendRelationDTO,
+  GetAllFriendsDTO,
+} from '../domain/HasFriend.dto';
 import { HasFriendRelationsUseCases } from '../domain/HasFriend.usecases';
 import { Role, Roles } from '../../../Auth/common/Roles.decorator';
 import { HumanId } from '../../../Auth/common/UserParam.decorator';
-
 
 @Controller('hasFriend')
 export class HasFriendController {

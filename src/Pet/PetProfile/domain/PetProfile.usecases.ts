@@ -16,8 +16,11 @@ import { HasPetRelation } from '../../../Human/HasPet/domain/HasPet.relation';
 import { IHasPetRepository } from '../../../Human/HasPet/domain/IHasPet.repository';
 import { IGenerateId } from '../../../_common/domain/IGenerateId';
 import { IValidate } from '../../../_common/domain/IValidate';
-import { Code, failMessage, successMessage } from '../../../_common/domain/ReturnMessage';
-
+import {
+  Code,
+  failMessage,
+  successMessage,
+} from '../../../_common/domain/ReturnMessage';
 
 export class PetProfileUseCases {
   constructor(
@@ -30,9 +33,8 @@ export class PetProfileUseCases {
   public async createProfile(dto: CreatePetProfileDTO, humanId: string) {
     this._validate(dto, CreatePetProfileSchema);
 
-    const existingPets = await this._hasPetRelationRepository.getAllHasPetRelations(
-      humanId,
-    );
+    const existingPets =
+      await this._hasPetRelationRepository.getAllHasPetRelations(humanId);
     if (existingPets.length >= 2) return failMessage(Code.NOT_ALLOWED);
 
     const petId = await this._generateId();

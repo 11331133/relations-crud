@@ -16,7 +16,8 @@ export class TransactionRunner {
     relationalDBcallback: (manager: EntityManager) => Promise<void>,
     graphDBcallback: (queryRunner: Transaction) => Promise<void>,
   ) {
-    const relationalDBQueryRunner = this._relationalDBConnection.createQueryRunner();
+    const relationalDBQueryRunner =
+      this._relationalDBConnection.createQueryRunner();
     await relationalDBQueryRunner.connect();
     await relationalDBQueryRunner.startTransaction();
 

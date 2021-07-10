@@ -9,7 +9,11 @@ import {
 } from '@nestjs/common';
 import { Role, Roles } from '../../../Auth/common/Roles.decorator';
 import { PetId } from '../../../Auth/common/UserParam.decorator';
-import { CreateLovesHumanRelationDTO, EditLovesHumanRelationDTO, DeleteLovesHumanRelationDTO } from '../domain/ILovesHuman.dto';
+import {
+  CreateLovesHumanRelationDTO,
+  EditLovesHumanRelationDTO,
+  DeleteLovesHumanRelationDTO,
+} from '../domain/ILovesHuman.dto';
 import { LovesHumanRelationUseCases } from '../domain/LovesHuman.usecases';
 
 @Controller('lovesHuman')

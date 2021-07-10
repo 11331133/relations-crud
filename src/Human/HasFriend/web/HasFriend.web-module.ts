@@ -7,7 +7,6 @@ import { IHasFriendRelRepository } from '../domain/IHasFriend.repository';
 import { HasFriendPersistenceService } from '../persistence/HasFriend.persistence-service';
 import { HasFriendController } from './HasFriend.controller';
 
-
 @Module({
   imports: [HasFriendPersistenceModule],
   controllers: [HasFriendController],

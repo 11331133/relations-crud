@@ -3,7 +3,6 @@ import { Neo4jClient } from '../../../_common/infrastructure/persistence/neo4jcl
 import { HasFriendRelation } from '../domain/HasFriend.relation';
 import { IHasFriendRelRepository } from '../domain/IHasFriend.repository';
 
-
 @Injectable()
 export class HasFriendPersistenceService implements IHasFriendRelRepository {
   constructor(private _neo4jclient: Neo4jClient) {}

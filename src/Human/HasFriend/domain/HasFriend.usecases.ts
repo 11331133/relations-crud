@@ -10,7 +10,11 @@ import {
   GetAllFriendsSchema,
 } from './HasFriend.schema';
 import { IValidate } from '../../../_common/domain/IValidate';
-import { Code, failMessage, successMessage } from '../../../_common/domain/ReturnMessage';
+import {
+  Code,
+  failMessage,
+  successMessage,
+} from '../../../_common/domain/ReturnMessage';
 import { IHasFriendRelRepository } from './IHasFriend.repository';
 
 export class HasFriendRelationsUseCases {

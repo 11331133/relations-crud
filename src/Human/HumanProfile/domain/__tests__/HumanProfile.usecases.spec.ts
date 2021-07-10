@@ -1,12 +1,18 @@
 import * as faker from 'faker';
-import { successMessage, failMessage, Code } from '../../../../_common/domain/ReturnMessage';
+import {
+  successMessage,
+  failMessage,
+  Code,
+} from '../../../../_common/domain/ReturnMessage';
 import { IGenerateIdMock } from '../../../../_common/domain/__tests__/common.mocks';
 import { validate } from '../../../../_common/infrastructure/adapters/validate.adapter';
 import { IHasFriendRelRepositoryMock } from '../../../HasFriend/domain/__tests__/HasFriend.mocks';
 import { HumanProfile } from '../HumanProfile.entity';
 import { HumanProfileUseCases } from '../HumanProfile.usecases';
-import { IHumanProfileRepositoryMock, HumanProfileEntityMock } from './HumanProfile.mocks';
-
+import {
+  IHumanProfileRepositoryMock,
+  HumanProfileEntityMock,
+} from './HumanProfile.mocks';
 
 describe('HumanProfile use cases', () => {
   const mockedId = faker.datatype.uuid();

@@ -1,5 +1,9 @@
 import { IValidate } from '../../../_common/domain/IValidate';
-import { Code, failMessage, successMessage } from '../../../_common/domain/ReturnMessage';
+import {
+  Code,
+  failMessage,
+  successMessage,
+} from '../../../_common/domain/ReturnMessage';
 import { HasPetRelation } from './HasPet.relation';
 
 import {

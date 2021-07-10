@@ -1,4 +1,4 @@
-import { ISchema } from "../../../_common/domain/ISchema";
+import { ISchema } from '../../../_common/domain/ISchema';
 
 export const CreateHasFriendRelationSchema: ISchema = {
   $id: 'CreateHasFriendRelationSchema',

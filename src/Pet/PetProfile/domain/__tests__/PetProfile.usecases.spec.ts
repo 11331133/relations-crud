@@ -10,7 +10,11 @@ import {
   PetProfileEntityMock,
 } from './PetProfile.mocks';
 import { HumanProfileEntityMock } from '../../../../Human/HumanProfile/domain/__tests__/HumanProfile.mocks';
-import { Code, failMessage, successMessage } from '../../../../_common/domain/ReturnMessage';
+import {
+  Code,
+  failMessage,
+  successMessage,
+} from '../../../../_common/domain/ReturnMessage';
 
 describe('Pet profile use cases', () => {
   const sampleProfile = {

@@ -1,6 +1,10 @@
 import { IGenerateId } from '../../../_common/domain/IGenerateId';
 import { IValidate } from '../../../_common/domain/IValidate';
-import { successMessage, failMessage, Code } from '../../../_common/domain/ReturnMessage';
+import {
+  successMessage,
+  failMessage,
+  Code,
+} from '../../../_common/domain/ReturnMessage';
 import { IHasFriendRelRepository } from '../../HasFriend/domain/IHasFriend.repository';
 import { HumanProfile } from './HumanProfile.entity';
 import {
