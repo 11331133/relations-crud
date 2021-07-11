@@ -9,7 +9,10 @@ import {
   ApiParam,
 } from '@nestjs/swagger';
 import { SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
-import { DeleteHasFriendRelationSchema } from '../domain/HasFriend.schema';
+import {
+  CreateHasFriendRelationSchema,
+  DeleteHasFriendRelationSchema,
+} from '../domain/HasFriend.schema';
 
 export class HasFriendApiDocs {
   public static createRelation = applyDecorators(
@@ -18,6 +21,7 @@ export class HasFriendApiDocs {
       description: 'Valid token with Role.Human is required',
     }),
     ApiBearerAuth(),
+    ApiBody({ schema: CreateHasFriendRelationSchema as SchemaObject }),
     ApiOkResponse({ description: 'Successfully created relation' }),
     ApiBadRequestResponse({ description: 'Cannot create circular relation' }),
     ApiForbiddenResponse({ description: 'Validation error' }),
