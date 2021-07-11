@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Neo4jClient } from '../../../_common/infrastructure/persistence/neo4jclient';
+import { Neo4jClient } from '../../../_common/infrastructure/persistence/Neo4j.client';
 import { ILovesHumanRepository } from '../domain/ILovesHuman.repository';
 import { LovesHumanRelation } from '../domain/LovesHuman.relation';
 

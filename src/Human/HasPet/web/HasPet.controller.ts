@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { HasPetRelationUseCases } from '../domain/HasPet.usecases';
 import {
   CreateHasPetRelationDTO,
@@ -6,17 +7,8 @@ import {
 } from '../domain/IHasPet.dto';
 import { Role, Roles } from '../../../Auth/common/Roles.decorator';
 import { HumanId } from '../../../Auth/common/UserParam.decorator';
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiForbiddenResponse,
-  ApiMethodNotAllowedResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
-import { CreateHasPetRelationSchema } from '../domain/HasPet.schema';
-import { SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
+
+import { HasPetApiDocs } from './HasPet.api-docs';
 
 @Controller('hasPet')
 @ApiTags("Human's HAS_PET relation")
@@ -25,15 +17,7 @@ export class HasPetController {
 
   @Post()
   @Roles({ roles: [Role.Human] })
-  @ApiOperation({
-    summary: 'Create relation',
-    description: 'Valid token with Role.Human is required',
-  })
-  @ApiBody({ schema: CreateHasPetRelationSchema as SchemaObject })
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: 'Successfully created relation' })
-  @ApiMethodNotAllowedResponse({ description: 'Too many pets allready exists' })
-  @ApiForbiddenResponse({ description: 'Validation error' })
+  @HasPetApiDocs.createRelation
   public async createRelation(
     @Body() dto: CreateHasPetRelationDTO,
     @HumanId() humanId: string,
@@ -43,13 +27,7 @@ export class HasPetController {
 
   @Delete(':petId')
   @Roles({ roles: [Role.Human] })
-  @ApiOperation({
-    summary: 'Delete relation',
-    description: 'Valid token with Role.Human is required',
-  })
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: 'Successfully deleted relation' })
-  @ApiForbiddenResponse({ description: 'Validation error' })
+  @HasPetApiDocs.deleteRelation
   public async deleteRelation(
     @Param() dto: DeleteHasPetRelationDTO,
     @HumanId() humanId: string,
@@ -59,12 +37,7 @@ export class HasPetController {
 
   @Get()
   @Roles({ roles: [Role.Human] })
-  @ApiOperation({
-    summary: 'Retrieve all Pets that Human with given ID has',
-    description: 'Valid token with Role.Human is required',
-  })
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: 'Successfully retrieved all relations' })
+  @HasPetApiDocs.getAllHasPetRelations
   public async getAllHasPetRelations(@HumanId() humanId: string) {
     return await this._useCases.getAllHasPetRelations(humanId);
   }

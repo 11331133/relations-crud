@@ -22,7 +22,7 @@ import { PetProfileWebModule } from './Pet/PetProfile/web/PetProfile.web-module'
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
         host: configService.get('RELATIONAL_DB_HOST'),
-        port: +configService.get<number>('RELATONAL_DB_PORT'),
+        port: +configService.get<number>('RELATIONAL_DB_PORT'),
         username: configService.get('RELATIONAL_DB_USERNAME'),
         password: configService.get('RELATIONAL_DB_PASSWORD'),
         database: configService.get('RELATIONAL_DB_DATABASENAME'),

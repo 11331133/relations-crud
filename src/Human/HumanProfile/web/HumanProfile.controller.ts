@@ -7,6 +7,7 @@ import {
   Body,
   Param,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { HumanId } from '../../../Auth/common/UserParam.decorator';
 import { Role, Roles } from '../../../Auth/common/Roles.decorator';
 import { HumanProfileUseCases } from '../domain/HumanProfile.usecases';
@@ -16,21 +17,7 @@ import {
   GetHumanProfileDTO,
   DeleteHumanProfileDTO,
 } from '../domain/IHumanProfile.dto';
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiCreatedResponse,
-  ApiForbiddenResponse,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
-import {
-  CreateHumanProfileSchema,
-  EditHumanProfileSchema,
-} from '../domain/HumanProfile.schema';
-import { SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
+import { HumanProfileApiDocs } from './HumanProfile.api-docs';
 
 @Controller('humanProfile')
 @ApiTags('Human profile')
@@ -38,27 +25,14 @@ export class HumanProfileController {
   constructor(private _useCases: HumanProfileUseCases) {}
 
   @Post()
-  @ApiOperation({ summary: "Create Human's profile" })
-  @ApiBody({ schema: CreateHumanProfileSchema as SchemaObject })
-  @ApiCreatedResponse({ description: 'Profile successfully created' })
-  @ApiForbiddenResponse({ description: 'Validation error' })
+  @HumanProfileApiDocs.createProfile
   public async createProfile(@Body() dto: CreateHumanProfileDTO) {
     return await this._useCases.createProfile(dto);
   }
 
   @Put()
   @Roles({ roles: [Role.Human] })
-  @ApiOperation({
-    summary: "Update Human's profile data",
-    description: 'Valid token with Role.Human is required',
-  })
-  @ApiBody({
-    schema: EditHumanProfileSchema as SchemaObject,
-    description: 'Besides ID, at least one another property is required',
-  })
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: 'Profile successfully edited' })
-  @ApiForbiddenResponse({ description: 'Validation error' })
+  @HumanProfileApiDocs.editProfile
   public async editProfile(
     @Body() dto: EditHumanProfileDTO,
     @HumanId() humanId: string,
@@ -68,13 +42,7 @@ export class HumanProfileController {
 
   @Get(':id')
   @Roles({ roles: [Role.Human], optional: true })
-  @ApiOperation({
-    summary: "Retrieve Human's profile",
-    description: 'Optional valid token with Role.Human can be given',
-  })
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: "Successfully retrieved Human's profile" })
-  @ApiNotFoundResponse({ description: "Human's profile not found" })
+  @HumanProfileApiDocs.getProfile
   public async getProfile(
     @Param() dto: GetHumanProfileDTO,
     @HumanId(false) humanId: string,
@@ -84,13 +52,7 @@ export class HumanProfileController {
 
   @Delete(':id')
   @Roles({ roles: [Role.Human] })
-  @ApiOperation({
-    summary: "Delete Human's profile",
-    description: 'Valid token with Role.Human is required',
-  })
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: 'Successfully executed request for deletion' })
-  @ApiForbiddenResponse({ description: 'Validation error' })
+  @HumanProfileApiDocs.deleteProfile
   public async deleteProfile(
     @Param() dto: DeleteHumanProfileDTO,
     @HumanId() humanId: string,

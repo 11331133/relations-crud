@@ -7,5 +7,5 @@ export interface DeleteHasFriendRelationDTO {
 }
 
 export interface GetAllFriendsDTO {
-  friendId: string;
+  humanId: string;
 }

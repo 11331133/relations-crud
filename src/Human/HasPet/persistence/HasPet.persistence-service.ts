@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { HasPetRelation } from '../../../Human/HasPet/domain/HasPet.relation';
-import { Neo4jClient } from '../../../_common/infrastructure/persistence/neo4jclient';
+import { Neo4jClient } from '../../../_common/infrastructure/persistence/Neo4j.client';
 import { IHasPetRepository } from '../domain/IHasPet.repository';
 
 @Injectable()

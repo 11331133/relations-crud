@@ -48,8 +48,8 @@ export class HasFriendRelationsUseCases {
     this._validate(dto, GetAllFriendsSchema);
 
     const canAccess =
-      dto.friendId === humanId ||
-      (await this._relationRepository.isFriend(dto.friendId, humanId));
+      dto.humanId === humanId ||
+      (await this._relationRepository.isFriend(dto.humanId, humanId));
 
     if (!canAccess) return failMessage(Code.FORBIDDEN);
 

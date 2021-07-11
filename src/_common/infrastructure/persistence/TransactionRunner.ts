@@ -3,7 +3,7 @@ import { InjectConnection } from '@nestjs/typeorm';
 import { Transaction } from 'neo4j-driver-core';
 import { EntityManager } from 'typeorm';
 import { IQueryRunnerFactory } from './IQueryRunnerFactory.typeorm';
-import { Neo4jClient } from './neo4jclient';
+import { Neo4jClient } from './Neo4j.client';
 
 @Injectable()
 export class TransactionRunner {

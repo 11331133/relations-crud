@@ -7,16 +7,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiCreatedResponse,
-  ApiForbiddenResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
-import { SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
+import { ApiTags } from '@nestjs/swagger';
 import { Role, Roles } from '../../../Auth/common/Roles.decorator';
 import { PetId } from '../../../Auth/common/UserParam.decorator';
 import {
@@ -24,11 +15,8 @@ import {
   EditLovesHumanRelationDTO,
   DeleteLovesHumanRelationDTO,
 } from '../domain/ILovesHuman.dto';
-import {
-  CreateLovesHumanRelationSchema,
-  EditLovesHumanRelationSchema,
-} from '../domain/LovesHuman.schema';
 import { LovesHumanRelationUseCases } from '../domain/LovesHuman.usecases';
+import { LovesHumanApiDocs } from './LovesHuman.api-docs';
 
 @Controller('lovesHuman')
 @ApiTags("Pet's LOVES_HUMAN relation")
@@ -37,11 +25,7 @@ export class LovesHumanController {
 
   @Post()
   @Roles({ roles: [Role.Pet] })
-  @ApiOperation({ summary: 'Create relation' })
-  @ApiBody({ schema: CreateLovesHumanRelationSchema as SchemaObject })
-  @ApiBearerAuth()
-  @ApiCreatedResponse({ description: 'Successfully created relation' })
-  @ApiForbiddenResponse({ description: 'Validation error' })
+  @LovesHumanApiDocs.createRelation
   public async createRelation(
     @Body() dto: CreateLovesHumanRelationDTO,
     @PetId() petId: string,
@@ -51,11 +35,7 @@ export class LovesHumanController {
 
   @Put()
   @Roles({ roles: [Role.Pet] })
-  @ApiOperation({ summary: 'Edit relation' })
-  @ApiBody({ schema: EditLovesHumanRelationSchema as SchemaObject })
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: 'Successfully edited relation' })
-  @ApiForbiddenResponse({ description: 'Validation error' })
+  @LovesHumanApiDocs.editRelation
   public async editRelation(
     @Body() dto: EditLovesHumanRelationDTO,
     @PetId() petId: string,
@@ -65,12 +45,7 @@ export class LovesHumanController {
 
   @Delete(':humanId')
   @Roles({ roles: [Role.Pet] })
-  @ApiOperation({
-    summary: 'Delete relation',
-    description: 'Valid token with Role.Pet is required',
-  })
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: 'Successfully deleted relation' })
+  @LovesHumanApiDocs.deleteRelation
   public async deleteRelation(
     @Param() dto: DeleteLovesHumanRelationDTO,
     @PetId() petId: string,
@@ -80,14 +55,7 @@ export class LovesHumanController {
 
   @Get()
   @Roles({ roles: [Role.Pet] })
-  @ApiOperation({
-    summary: 'Retrieve all Humans that Pet loves',
-    description: 'Valid token with Role.Pet is required',
-  })
-  @ApiBearerAuth()
-  @ApiOkResponse({
-    description: 'Successfully retrieved all Humans that Pet loves',
-  })
+  @LovesHumanApiDocs.getAllHumansPetLoves
   public async getAllHumansPetLoves(@PetId() petId: string) {
     return await this._useCases.getAllHumansPetLoves(petId);
   }

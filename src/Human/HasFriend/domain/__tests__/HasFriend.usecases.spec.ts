@@ -74,11 +74,11 @@ describe('HasFriend Relation UseCases', () => {
 
     it('throw error when id is too short', async () => {
       await expect(async () => {
-        await useCases.getAllFriends({ friendId: '' }, mockedId1);
+        await useCases.getAllFriends({ humanId: '' }, mockedId1);
       }).rejects.toThrow();
 
       await expect(async () => {
-        await useCases.getAllFriends({ friendId: 'abcd' }, mockedId1);
+        await useCases.getAllFriends({ humanId: 'abcd' }, mockedId1);
       }).rejects.toThrow();
     });
 
@@ -88,7 +88,7 @@ describe('HasFriend Relation UseCases', () => {
       );
 
       const result = await useCases.getAllFriends(
-        { friendId: mockedId1 },
+        { humanId: mockedId1 },
         mockedId1,
       );
 
@@ -106,7 +106,7 @@ describe('HasFriend Relation UseCases', () => {
       IHasFriendRelRepositoryMock.isFriend.mockResolvedValueOnce(true);
 
       const result = await useCases.getAllFriends(
-        { friendId: mockedId1 },
+        { humanId: mockedId1 },
         mockedId2,
       );
 
@@ -124,7 +124,7 @@ describe('HasFriend Relation UseCases', () => {
       IHasFriendRelRepositoryMock.isFriend.mockResolvedValueOnce(false);
 
       const result = await useCases.getAllFriends(
-        { friendId: mockedId1 },
+        { humanId: mockedId1 },
         mockedId2,
       );
 

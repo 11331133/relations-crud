@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Neo4jClient } from '../../../_common/infrastructure/persistence/neo4jclient';
+import { Neo4jClient } from '../../../_common/infrastructure/persistence/Neo4j.client';
 import { TransactionRunner } from '../../../_common/infrastructure/persistence/TransactionRunner';
 import { HumanProfileGraphPersistence } from './HumanProfile.graph-persistence';
 import { HumanProfileOrmEntity } from './HumanProfile.orm-entity';
